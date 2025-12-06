@@ -1,0 +1,52 @@
+<section 
+    class="section section--query" 
+    id="query_editor"
+    {% if scroll_to_editor %}data-scroll="true"{% endif %}
+>
+    <h2 class="heading heading--lg">クエリを入力</h2>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="messages">
+                {% for category, msg in messages %}
+                    <li class="{{ category }}">{{ msg }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    <form 
+        id="form--submit-query"
+        class="form form--query" 
+        method="post" 
+        action="{% block action_url %}{% endblock %}"
+    >
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <!-- CodeMirrorラッパーの高さを保持 -->
+        <input 
+            type="hidden" 
+            name="sql_query_height"
+            id="sql_query_height" 
+        /> 
+        <!-- CodeMirrorをdivでラップ -->
+        <div 
+            id="sql_query_wrapper" 
+            class="cm-wrapper"
+            data-sql-query-height="{{ sql_query_height | default('', true) }}"
+            {% if sql_query_height %}style="height: {{ sql_query_height }}px;"{% endif %}
+        >
+            <!-- コピーアイコン -->
+            <button
+                type="button" 
+                id="copy-query-btn"
+                title="クエリをコピー"
+                class="copy-btn"
+            >📋</button>
+            <textarea
+                name="sql_query" 
+                id="sql_query" 
+                class="textarea textarea--sql" 
+                placeholder="SELECT文を入力"
+            >{{ sql_query | default('', true) }}</textarea>
+        </div>
+        {% block query_editor_actions %}{% endblock %}
+    </form>
+</section>

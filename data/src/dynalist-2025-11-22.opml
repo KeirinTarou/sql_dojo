@@ -1,0 +1,720 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<opml version="2.0">
+  <head>
+    <title></title>
+    <flavor>dynalist</flavor>
+    <source>https://dynalist.io</source>
+  </head>
+  <body>
+    <outline text="第2章 ひとつのテーブルを扱う">
+      <outline text="【その7】集合関数を使う">
+        <outline text="書いてみよう">
+          <outline text="うちの商品って、平均単価いくらくらいなの？　ちょっと教えて"/>
+          <outline text="※" _note="```&#10;SELECT&#10;  AVG(p.Price) AS 平均単価&#10;FROM&#10;  Products AS p&#10;;&#10;```"/>
+        </outline>
+        <outline text="第1問">
+          <outline text="テーブルCustomersの顧客数を求めて、「お得意様数」と別名をつけなさい。"/>
+          <outline text="※" _note="```&#10;SELECT&#10;  COUNT(*) AS お得意様数 &#10;FROM&#10;  Customers&#10;;&#10;```"/>
+        </outline>
+        <outline text="第2問">
+          <outline text="テーブルEmployeesのWeight合計を求め、「社員体重合計」と別名をつけなさい。"/>
+          <outline text="※" _note="```&#10;SELECT&#10;  SUM(e.Weight) AS 社員体重合計 &#10;FROM&#10;  Employees AS e&#10;;&#10;```"/>
+        </outline>
+        <outline text="第3問">
+          <outline text="テーブルProductsのPriceの最大値を求め、「最高額価格」と別名をつけなさい。"/>
+          <outline text="※" _note="```&#10;SELECT&#10;  MAX(p.Price) AS 最高額価格&#10;FROM&#10;  Products AS p&#10;;&#10;```"/>
+        </outline>
+        <outline text="第4問">
+          <outline text="テーブルEmployeesのWeightの最小値を求め、「最軽量体重」と別名をつけなさい。"/>
+          <outline text="※" _note="```&#10;SELECT&#10;  MIN(e.Weight) AS 最軽量体重&#10;FROM&#10;  Employees AS e&#10;;&#10;```"/>
+        </outline>
+        <outline text="第5問">
+          <outline text="テーブルEmployeesのHeight、Weightの平均値を求め、「平均身長」,「平均体重」と別名をつけなさい。"/>
+          <outline text="※" _note="```&#10;SELECT&#10;  AVG(e.Height) AS 平均身長, &#10;  AVG(e.Weight) AS 平均体重&#10;FROM&#10;  Employees AS e&#10;;&#10;```"/>
+        </outline>
+      </outline>
+      <outline text="【その8】ある条件でレコードを絞り込む(1)" collapsed="true">
+        <outline text="書いてみよう">
+          <outline text="うちの会社でバスケットボールのチームを作ろうと思う。ついては、背の高い人をピックアップしてくれ"/>
+          <outline text="※" _note="```&#10;SELECT&#10;  e.EmployeeName AS 氏名&#10;FROM&#10;  Employees AS e&#10;ORDER BY&#10;  e.Height DESC&#10;LIMIT&#10;  3&#10;;&#10;```"/>
+        </outline>
+        <outline text="第1問">
+          <outline text="テーブルProductsからPriceが2,500以上のProductNameを取り出しなさい。"/>
+          <outline text="※" _note="```&#10;SELECT&#10;  p.ProductName&#10;FROM&#10;  Products AS p&#10;WHERE&#10;  p.Price &gt;= 2500&#10;;&#10;```"/>
+        </outline>
+        <outline text="第2問">
+          <outline text="テーブルEmployeesからWeightが70以上のEmployeeName, Weightを取り出しなさい。"/>
+          <outline text="※" _note="```&#10;SELECT&#10;  e.EmployeeName, &#10;  e.Weight &#10;FROM&#10;  Employees AS e&#10;WHERE&#10;  e.Weight &gt;= 70&#10;;&#10;```"/>
+        </outline>
+        <outline text="第3問">
+          <outline text="テーブルEmployeesからHeightが160以上180以下のEmployeeName、Heightを取り出しなさい。"/>
+          <outline text="※" _note="```&#10;SELECT&#10;  e.EmployeeName, &#10;  e.Height&#10;FROM&#10;  Employees AS e&#10;WHERE&#10;  e.Height BETWEEN 160 AND 180&#10;;&#10;```"/>
+        </outline>
+        <outline text="第4問">
+          <outline text="テーブルSalesからSaleDateが2007年6月1日以降のSaleIDを取り出しなさい。SaleDateの表記は「2007-06-01」となっています。"/>
+          <outline text="※" _note="```&#10;SELECT&#10;  s.SaleID&#10;FROM&#10;  Sales AS s&#10;WHERE&#10;  s.SaleDate &gt;= &apos;2007-06-01&apos;&#10;;&#10;```"/>
+        </outline>
+        <outline text="第5問">
+          <outline text="テーブルEmployeesからHeightが170以上、Weightが60以上のEmployeeName,Height,Weightを取り出しなさい。"/>
+          <outline text="※" _note="```&#10;SELECT&#10;  e.EmployeeName, &#10;  e.Height, &#10;  e.Weight&#10;FROM&#10;  Employees AS e&#10;WHERE&#10;  e.Height &gt;= 170&#10;  AND e.Weight &gt;= 60&#10;;&#10;```"/>
+        </outline>
+      </outline>
+      <outline text="【その9】ある条件でレコードを絞り込む(2)" collapsed="true">
+        <outline text="書いてみよう">
+          <outline text="最近の女性の名前って、昔みたいに～子ってつく人少ない気がするんだよな。うちの会社だと何人いるんだろう"/>
+          <outline text="※" _note="```&#10;SELECT&#10;  COUNT(*) AS 子のつく社員の人数&#10;FROM&#10;  Employees AS e&#10;WHERE&#10;  e.EmployeeName LIKE &apos;%子&apos;&#10;;&#10;```"/>
+        </outline>
+        <outline text="第1問">
+          <outline text="テーブルCustomersからCustomerNameに&apos;株式会社&apos;を含むCustomerNameを取り出しなさい。"/>
+          <outline text="※" _note="```&#10;SELECT&#10;  c.CustomerName AS 会社名&#10;FROM&#10;  Customers AS c&#10;WHERE&#10;  c.CustomerName Like &apos;%株式会社%&apos;&#10;;&#10;```"/>
+        </outline>
+        <outline text="第2問">
+          <outline text="テーブルEmployeesからEmployeeNameに&apos;ー&apos;を含むレコードのHeightの平均を求めなさい。"/>
+          <outline text="※" _note="```&#10;SELECT&#10;  AVG(e.Height) AS 平均身長&#10;FROM&#10;  Employees AS e&#10;WHERE&#10;  e.EmployeeName LIKE &apos;%ー%&apos;&#10;;&#10;```"/>
+        </outline>
+        <outline text="第3問">
+          <outline text="テーブルCustomersからCustomerNameに&apos;株式会社&apos;を含まないレコードの件数を求めなさい。"/>
+          <outline text="※" _note="```&#10;SELECT&#10;  COUNT(*) AS 顧客数&#10;FROM&#10;  Customers AS c&#10;WHERE&#10;  c.CustomerName NOT LIKE &apos;%株式会社%&apos;&#10;;&#10;```"/>
+        </outline>
+        <outline text="第4問">
+          <outline text="テーブルEmployeesからEmployeeNameに&apos;リ&apos;を含み、身長が160以下のEmployeeName,Heightを取り出しなさい。"/>
+          <outline text="※" _note="```&#10;SELECT&#10;  e.EmployeeName, &#10;  e.Height&#10;FROM&#10;  Employees AS e&#10;WHERE&#10;  e.EmployeeName LIKE &apos;%リ%&apos;&#10;  AND e.Height &lt;= 160&#10;;&#10;```"/>
+        </outline>
+        <outline text="第5問">
+          <outline text="テーブルCustomersからCustomerNameに&apos;株式会社&apos;を含まず、Addressに&apos;江戸川区&apos;を含むレコードを取り出しなさい。"/>
+          <outline text="※" _note="```&#10;SELECT&#10;  c.*&#10;FROM&#10;  Customers AS c&#10;WHERE&#10;  c.CustomerName Not LIKE &apos;%株式会社%&apos;&#10;  AND c.Address LIKE &apos;%江戸川区%&apos;&#10;;&#10;```"/>
+        </outline>
+      </outline>
+      <outline text="【その10】列の値に条件を設定する" collapsed="true">
+        <outline text="書いてみよう">
+          <outline text="うちの商品を価格帯別でランク付けしてみるとどうなるだろうか。ちょっと調べてくれ"/>
+          <outline text="※" _note="```&#10;SELECT&#10;  p.ProductName AS 商品名, &#10;  CASE&#10;    WHEN p.Price &gt; 2000 THEN &apos;A&apos;&#10;    WHEN p.Price &gt; 1000 THEN &apos;B&apos;&#10;    ELSE &apos;C&apos;&#10;  END AS ランク&#10;FROM&#10;  Products AS p&#10;;&#10;```"/>
+        </outline>
+        <outline text="第1問" collapsed="true">
+          <outline text="テーブルEmployeesを身長によって160未満を「A」、160以上170未満を「B」、170以上180未満を「C」、180以上を「D」にランク分けし、EmployeeName（「社員名」という別名をつける）と「ランク」を表示しなさい。"/>
+          <outline text="※" _note="```&#10;SELECT&#10;  e.EmployeeName AS 社員名, &#10;  CASE&#10;    WHEN e.Height &lt; 160 THEN &apos;A&apos;&#10;    WHEN e.Height &lt; 170 THEN &apos;B&apos;&#10;    WHEN e.Height &lt; 180 THEN &apos;C&apos;&#10;    ELSE &apos;D&apos;&#10;  END AS ランク&#10;FROM&#10;  Employees AS e&#10;;&#10;```"/>
+        </outline>
+        <outline text="第2問" collapsed="true">
+          <outline text="テーブルSalaryをAmountによって150,000未満を「D」、150,000以上300,000未満を「C」、300,000以上500,000未満を「B」、500,000以上を「A」にランク分けし、SalaryID、ランクを表示しなさい。"/>
+          <outline text="※" _note="```&#10;SELECT&#10;  s.SalaryID AS 給与ID, &#10;  CASE&#10;    WHEN s.Amount &lt; 150000 THEN &apos;D&apos; &#10;    WHEN s.Amount &lt; 300000 THEN &apos;C&apos;&#10;    WHEN s.Amount &lt; 500000 THEN &apos;B&apos;&#10;    ELSE &apos;A&apos;&#10;  END AS ランク&#10;FROM&#10;  Salary AS s  &#10;;&#10;```"/>
+        </outline>
+        <outline text="第3問" collapsed="true">
+          <outline text="テーブルEmployeesを体重によって60未満を「A」、60以上70未満を「B」、70以上80未満を「C」、80以上を「D」にランク分けし、EmployeeName、ランクを表示しなさい。"/>
+          <outline text="※" _note="```&#10;SELECT&#10;  e.EmployeeName AS 社員名, &#10;  CASE&#10;    WHEN e.Weight &lt; 60 THEN &apos;A&apos; &#10;    WHEN e.Weight &lt; 70 THEN &apos;B&apos;&#10;    WHEN e.Weight &lt; 80 THEN &apos;C&apos;&#10;    ELSE &apos;D&apos;&#10;  END AS ランク&#10;FROM&#10;  Employees AS e&#10;;&#10;```"/>
+        </outline>
+        <outline text="第4問" collapsed="true">
+          <outline text="テーブルSalesをQuantityによって、10以上を「A」、10未満を「B」にランク分けし、SaleID（「販売ID」という別名をつける）、ランクを表示しなさい。"/>
+          <outline text="※" _note="```&#10;SELECT&#10;  s.SaleID AS 販売ID, &#10;  CASE&#10;    WHEN s.Quantity &gt;= 10 THEN &apos;A&apos;&#10;    ELSE &apos;B&apos;&#10;  END AS ランク&#10;FROM&#10;  Sales AS s&#10;;&#10;```"/>
+        </outline>
+        <outline text="第5問" collapsed="true">
+          <outline text="テーブルEmployeesを身長によって160未満を「A」、160以上170未満を「B」、170以上180未満を「C」、180以上を「D」にランク分けし、EmployeeName（「社員名」と別名をつける）、Height（「身長」と別名をつける）とランクを表示しなさい。"/>
+          <outline text="※" _note="```&#10;SELECT&#10;  e.EmployeeName AS 社員名, &#10;  e.Height AS 身長, &#10;  CASE&#10;    WHEN e.Height &lt; 160 THEN &apos;A&apos;&#10;    WHEN e.Height &lt; 170 THEN &apos;B&apos;&#10;    WHEN e.Height &lt; 180 THEN &apos;C&apos;&#10;    ELSE &apos;D&apos;&#10;  END AS ランク&#10;FROM&#10;  Employees AS e&#10;;&#10;```"/>
+        </outline>
+      </outline>
+      <outline text="【その11】グループ単位で集計する" collapsed="true">
+        <outline text="書いてみよう">
+          <outline text="都道府県別に、それぞれ何人ずつ顧客がいるのか教えてくれ" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  c.PrefecturalID AS 都道府県&#10;  , COUNT(*) AS 顧客数&#10;FROM&#10;  Customers AS c&#10;GROUP BY&#10;  c.PrefecturalID&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第1問">
+          <outline text="テーブルSalesをCustomerIDでグループ化し、CustomerIDごとの件数を求めなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  s.CustomerID AS 顧客ID&#10;  , COUNT(*) AS 件数&#10;FROM&#10;  Sales AS s&#10;GROUP BY&#10;  s.CustomerID&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第2問">
+          <outline text="テーブルSalaryをEmployeeIDでグループ化し、EmployeeIDごとのAmount合計を求めなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  s.EmployeeID AS 社員ID&#10;  , SUM(s.Amount) AS 合計&#10;FROM&#10;  Salary AS s&#10;GROUP BY&#10;  s.EmployeeID&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第3問">
+          <outline text="テーブルSalesをCustomerID、ProductIDでグループ化し、CustomerID、ProductIDごとのQuantity合計を求めなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  s.CustomerID AS 顧客ID&#10;  , s.ProductID AS 商品ID&#10;  , SUM(s.Quantity) AS 数量 &#10;FROM&#10;  Sales AS s&#10;GROUP BY&#10;  s.CustomerID&#10;  , s.ProductID&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第4問">
+          <outline text="テーブルEmployeesをBloodType（「血液型」と別名をつける）でグループ化し、Height、Weightの平均値（それぞれ別名は「平均身長」、「平均体重」とします）を求めなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  e.BloodType AS 血液型&#10;  , AVG(e.Height) AS 平均身長&#10;  , AVG(e.Weight) AS 平均体重&#10;FROM&#10;  Employees AS e&#10;GROUP BY&#10;  e.BloodType&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第5問">
+          <outline text="テーブルSalaryをEmployeeID（別名は「社員ID」）でグループ化し、レコード数（別名は「支給回数」）、Amountの平均値（別名は「平均支給額」）を求めなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  s.EmployeeID AS 社員ID&#10;  , COUNT(*) AS 支給回数&#10;  , AVG(s.Amount) AS 平均支給額&#10;FROM&#10;  Salary AS s&#10;GROUP BY&#10;  s.EmployeeID&#10;;&#10;```"/>
+          </outline>
+        </outline>
+      </outline>
+      <outline text="【その12】グループ単位で集計した結果を絞り込む（1）" collapsed="true">
+        <outline text="書いてみよう">
+          <outline text="この前の都道府県別顧客数だけど、顧客数が3人以上の都道府県だけを出してくれ" collapsed="true">
+            <outline text="※ " _note="```&#10;SELECT&#10;  c.PrefecturalID AS 都道府県&#10;  , COUNT(*) AS 顧客数&#10;FROM&#10;  Customers AS c&#10;GROUP BY&#10;  c.PrefecturalID&#10;HAVING&#10;  COUNT(*) &gt;= 3&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第1問">
+          <outline text="テーブルSalaryからレコード数が12未満のEmployeeIDとレコード数を取り出しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  s.EmployeeID AS 社員ID&#10;  , COUNT(*) AS 支給回数&#10;FROM&#10;  Salary AS s&#10;GROUP BY&#10;  s.EmployeeID&#10;HAVING&#10;  COUNT(*) &lt; 12&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第2問">
+          <outline text="テーブルCustomersをPrefecturalIDでグループ化し、複数レコードを持つPrefecturalIDを表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  c.PrefecturalID AS 県ID&#10;  , COUNT(*) AS 顧客数&#10;FROM&#10;  Customers AS c&#10;GROUP BY&#10;  c.PrefecturalID&#10;HAVING&#10;  COUNT(*) &gt; 1&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第3問">
+          <outline text="テーブルSalesをProductIDでグループ化し、レコードを10以上、50以下持つProductIDとそのレコード数を表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  s.ProductID AS 商品ID&#10;  , COUNT(*) AS 売上レコード数&#10;FROM&#10;  Sales AS s&#10;GROUP BY&#10;  s.ProductID&#10;HAVING&#10;  COUNT(*) &gt;= 10 &#10;  AND COUNT(*) &lt;= 50&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第4問">
+          <outline text="テーブルEmployeesをBloodTypeでグループ化したとき、10件以上持つBloodType（別名は「血液型」）、データ数（別名は「データ件数」）を表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  e.BloodType AS 血液型&#10;  , COUNT(*) AS データ件数&#10;FROM&#10;  Employees AS e&#10;GROUP BY&#10;  e.BloodType&#10;HAVING&#10;  COUNT(*) &gt;= 10&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第5問">
+          <outline text="テーブルSalesをProductIDでグループ化したとき、Quantityの合計が100以上かつ200以下のProductID（別名は「商品ID」）、Quantity合計（別名は「数量合計」）を表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  s.ProductID AS 商品ID&#10;  , SUM(s.Quantity) AS 数量合計&#10;FROM&#10;  Sales AS s&#10;GROUP BY&#10;  s.ProductID&#10;HAVING&#10;  SUM(s.Quantity) &gt;= 100 &#10;  AND SUM(s.Quantity) &lt;=200&#10;;&#10;```"/>
+          </outline>
+        </outline>
+      </outline>
+      <outline text="【その13】グループ単位で集計した結果を絞り込む（2）" collapsed="true">
+        <outline text="書いてみよう">
+          <outline text="この前の都道府県別顧客数だけど、会員種別が法人の顧客数が2人以上の都道府県だけを出してくれ" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  c.PrefecturalID AS 都道府県&#10;  , COUNT(*) AS 顧客数&#10;FROM&#10;  Customers AS c&#10;WHERE&#10;  c.CustomerClassID = 1&#10;GROUP BY&#10;  c.PrefecturalID&#10;HAVING&#10;  COUNT(*) &gt;= 2&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第1問">
+          <outline text="テーブルCustomersをPrefecturalIDでグループ化したとき、PrefecturalIDが10以上で複数の顧客を持つPrefecturalID、レコード数を表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  c.PrefecturalID AS 県ID&#10;  , COUNT(*) AS 顧客数&#10;FROM &#10;  Customers AS c&#10;WHERE&#10;  c.PrefecturalID &gt;= 10&#10;GROUP BY &#10;  c.PrefecturalID&#10;HAVING &#10;  COUNT(*) &gt; 1 &#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第2問">
+          <outline text="テーブルSalaryからレコード数が12以上、EmployeeIDが20以上のEmployeeIDとレコード数を取り出しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  s.EmployeeID AS 社員ID&#10;  , COUNT(*) AS 支給回数&#10;FROM&#10;  Salary AS s&#10;WHERE&#10;  s.EmployeeID &gt;= 20&#10;GROUP BY&#10;  s.EmployeeID&#10;HAVING&#10;  COUNT(*) &gt;= 12&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第3問">
+          <outline text="テーブルSalesをProductIDでグループ化し、レコードを30以上持ち、かつProductIDが20以上30以下のProductIDとそのレコード数を表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  s.ProductID AS 商品ID&#10;  , COUNT(*) AS 売上レコード数 &#10;FROM&#10;  Sales AS s&#10;WHERE&#10;  s.ProductID &gt;= 20 &#10;  AND s.ProductID &lt;= 30&#10;GROUP BY&#10;  s.ProductID&#10;HAVING&#10;  COUNT(*) &gt;= 30&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第4問">
+          <outline text="テーブルEmployeesをBloodTypeでグループ化したとき、Heightが165以上の社員データを5件以上持つBloodType（別名は「血液型」）、データ数（別名は「データ件数」）を表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  e.BloodType AS 血液型&#10;  , COUNT(*) AS データ件数&#10;FROM&#10;  Employees AS e&#10;WHERE&#10;  e.Height &gt;= 165&#10;GROUP BY&#10;  e.BloodType&#10;HAVING&#10;  COUNT(*) &gt;= 5&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第5問">
+          <outline text="テーブルSalesをProductIDでグループ化したとき、SaleDateが2007-06-01以降でQuantityの合計が200以上のProductID（別名は「商品ID」）、Quantity合計（別名は「数量合計」）を表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  s.ProductID AS 商品ID&#10;  , SUM(s.Quantity) AS 数量合計&#10;FROM&#10;  Sales AS s&#10;WHERE&#10;  s.SaleDate &gt;= &apos;2007-06-01&apos;&#10;GROUP BY&#10;  s.ProductID&#10;HAVING&#10;  SUM(s.Quantity) &gt;= 200&#10;;&#10;```"/>
+          </outline>
+        </outline>
+      </outline>
+      <outline text="【その14】クロス集計を行う" collapsed="true">
+        <outline text="書いてみよう">
+          <outline text="うちの会社って、血液型は何が多いんだろうね。それぞれの人数を入社年度ごとに出してくれ" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  e.HireFiscalYear AS 入社年度&#10;  , SUM(&#10;    CASE&#10;      WHEN e.BloodType = &apos;A&apos; THEN 1&#10;      ELSE 0&#10;    END&#10;  ) AS A型&#10;  , SUM(&#10;    CASE&#10;      WHEN e.BloodType = &apos;B&apos; THEN 1&#10;      ELSE 0&#10;    END&#10;  ) AS B型&#10;  , SUM(&#10;    CASE&#10;      WHEN e.BloodType = &apos;O&apos; THEN 1&#10;      ELSE 0&#10;    END&#10;  ) AS O型&#10;  , SUM(&#10;    CASE&#10;      WHEN e.BloodType = &apos;AB&apos; THEN 1&#10;      ELSE 0&#10;    END&#10;  ) AS AB型&#10;FROM&#10;  Employees AS e&#10;GROUP BY&#10;  e.HireFiscalYear&#10;; &#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第1問">
+          <outline text="テーブルEmployeesをHireFiscalYear（入社年度）でグループ化したとき、Height（身長）を次の4つの範囲に分けて、それぞれの人数を表示しなさい。「160cm以下：Heightが160以下」「170cm以下：Heightが170以下」「180cm以下：Heightが180以下」「180cm超：Heightが180より大きい」" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  e.HireFiscalYear AS 入社年度&#10;  , SUM(&#10;	CASE&#10;	  WHEN e.Height &lt;= 160 THEN 1&#10;	  ELSE 0 &#10;	END&#10;  ) AS &quot;160cm以下&quot;&#10;  , SUM(&#10;    CASE &#10;      WHEN e.Height &gt; 160 AND e.Height &lt;= 170 THEN 1&#10;      ELSE 0 &#10;	END&#10;  ) AS &quot;170cm以下&quot;&#10;  , SUM(&#10;    CASE &#10;      WHEN e.Height &gt; 170 AND e.Height &lt;= 180 THEN 1&#10;      ELSE 0 &#10;    END&#10;  ) AS &quot;180cm以下&quot;&#10;  , SUM(&#10;    CASE &#10;      WHEN e.Height &gt; 180 THEN 1&#10;      ELSE 0 &#10;    END&#10;  ) AS &quot;180cm超&quot;&#10;FROM &#10;  Employees AS e&#10;GROUP BY &#10;  e.HireFiscalYear&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第2問">
+          <outline text="テーブルProductsをCategoryID（商品カテゴリID）でグループ化したとき、Price（単価）を次の4つの範囲に分けて、それぞれの商品数を表示しなさい。「100円未満：Priceが100未満」「400円未満：Priceが400未満」「1000円未満：Priceが1000未満」「1000円以上：Priceが1000以上」" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  p.CategoryID AS 商品カテゴリID&#10;  , SUM(&#10;    CASE&#10;      WHEN p.Price &lt; 100 THEN 1&#10;      ELSE 0 &#10;    END&#10;  ) AS &quot;100円未満&quot;&#10;  , SUM(&#10;    CASE &#10;      WHEN p.Price &gt;= 100 AND p.Price &lt; 400 THEN 1&#10;      ELSE 0 &#10;    END&#10;  ) AS &quot;400円未満&quot;&#10;  , SUM(&#10;    CASE &#10;      WHEN p.Price &gt;= 400 AND p.Price &lt; 1000 THEN 1&#10;      ELSE 0 &#10;    END&#10;  ) AS &quot;1000円未満&quot;&#10;  , SUM(&#10;    CASE&#10;      WHEN p.Price &gt;= 1000 THEN 1&#10;      ELSE 0 &#10;    END&#10;  ) AS &quot;1000円以上&quot;&#10;FROM &#10;  Products AS p&#10;GROUP BY&#10;  p.CategoryID&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第3問">
+          <outline text="テーブルSalesをCustomerID（顧客ID）でグループ化したとき、SaleDate（販売日）の月を9月・10月・11月の3つに区分けして、それぞれの合計販売個数を表示しなさい。なお、抽出条件として販売日の年は2006年のみとします。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  s.CustomerID AS 顧客ID&#10;  , SUM(&#10;    CASE&#10;      WHEN MONTH(s.SaleDate) = 9 THEN s.Quantity&#10;      ELSE 0&#10;    END        &#10;  ) AS &quot;9月&quot;&#10;  , SUM(&#10;    CASE&#10;      WHEN MONTH(s.SaleDate) = 10 THEN s.Quantity&#10;      ELSE 0&#10;    END        &#10;  ) AS &quot;10月&quot;&#10;  , SUM(&#10;    CASE&#10;      WHEN MONTH(s.SaleDate) = 11 THEN s.Quantity&#10;      ELSE 0&#10;    END        &#10;  ) AS &quot;11月&quot;&#10;FROM&#10;  Sales AS s&#10;WHERE&#10;  YEAR(s.SaleDate) = 2006&#10;GROUP BY&#10;  s.CustomerID&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第4問">
+          <outline text="テーブルCustomersをPrefecturalID（都道府県ID）でグループ化したとき、CustomerClassID（顧客クラス）を次の2つに区分けして、それぞれの顧客数を表示しなさい。「法人：CustomerClassIDが1」「個人：CustomerClassIDが2」" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  c.PrefecturalID AS 都道府県ID&#10;  , SUM(&#10;    CASE&#10;      WHEN c.CustomerClassID = 1 THEN 1&#10;      ELSE 0&#10;    END&#10;  ) AS 法人&#10;  , SUM(&#10;    CASE&#10;      WHEN c.CustomerClassID = 2 THEN 1&#10;      ELSE 0&#10;    END&#10;  ) AS 個人&#10;FROM&#10;  Customers AS c&#10;GROUP BY&#10;  c.PrefecturalID&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第5問">
+          <outline text="テーブルEmployeesをHireFiscalYear（入社年度）でグループ化したとき、Weight（体重）を次の4つの範囲に分けて、それぞれの人数を表示しなさい。「50kg以下（別名は「50kg以下」とします）：Weightが50以下」「60kg以下（別名は「51～60kg」とします）：Weightが60以下」「80kg以下（別名は「61～80kg」とします）：Weightが80以下」「80kg超（別名は「80kg超」とします）：Weightが80より大きい」" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  e.HireFiscalYear AS 入社年度&#10;  , SUM(&#10;    CASE&#10;      WHEN e.Weight &lt;= 50 THEN 1&#10;      ELSE 0&#10;    END&#10;  ) AS &quot;50kg以下&quot;&#10;  , SUM(&#10;    CASE&#10;      WHEN e.Weight &gt; 50 AND e.Weight &lt;= 60 THEN 1&#10;      ELSE 0&#10;    END&#10;  ) AS &quot;51～60kg&quot;&#10;  , SUM(&#10;    CASE&#10;      WHEN e.Weight &gt; 60 AND e.Weight &lt;= 80 THEN 1&#10;      ELSE 0&#10;    END&#10;  ) AS &quot;61～80kg&quot;&#10;  , SUM(&#10;    CASE&#10;      WHEN e.Weight &gt; 80 THEN 1&#10;      ELSE 0&#10;    END&#10;  ) AS &quot;80kg超&quot;&#10;FROM&#10;  Employees AS e&#10;GROUP BY&#10;  e.HireFiscalYear&#10;;&#10;```"/>
+          </outline>
+        </outline>
+      </outline>
+      <outline text="【その15】並び替えを行う" collapsed="true">
+        <outline text="書いてみよう">
+          <outline text="今、うちの会社が扱っている商品の名前を単価の安い順に一覧で全部出してくれ" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  p.ProductName&#10;FROM&#10;  Products AS p&#10;ORDER BY&#10;  p.Price ASC&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第1問">
+          <outline text="テーブルEmployeesをBirthdayで昇順に並べ、EmployeeID、EmployeeName、Birthdayを表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  e.EmployeeID&#10;  , e.EmployeeName&#10;  , e.Birthday&#10;FROM&#10;  Employees AS e&#10;ORDER BY&#10;  e.Birthday ASC&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第2問">
+          <outline text="テーブルSalesをCustomerID、ProductIDで昇順、SaleDate降順に並べ、SaleID、Quantity、CustomerID、ProductID、SaleDateを表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  s.SaleID&#10;  , s.Quantity&#10;  , s.CustomerID&#10;  , s.ProductID&#10;  , s.SaleDate&#10;FROM&#10;  Sales AS s&#10;ORDER BY&#10;  s.CustomerID ASC&#10;  , s.ProductID ASC&#10;  , s.SaleDate DESC&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第3問">
+          <outline text="テーブルProductsのPriceが1,000以下のデータをCategoryIDでグループ化し、レコード数が5未満のデータをCategoryIDで昇順に並べCategoryID、レコード数を表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  p.CategoryID&#10;  , COUNT(*) AS 商品数&#10;FROM&#10;  Products AS p&#10;WHERE&#10;  p.Price &lt;= 1000&#10;GROUP BY&#10;  p.CategoryID&#10;HAVING&#10;  COUNT(*) &lt; 5&#10;ORDER BY&#10;  p.CategoryID ASC&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第4問">
+          <outline text="テーブルSalaryをEmployeeIDでグループ化、Amountを合計し、Amount合計が多い順に並べてEmployeeID（別名は「社員ID」）、Amount合計（別名は「給与合計」）を表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  s.EmployeeID AS 社員ID&#10;  , SUM(s.Amount) AS 給与合計&#10;FROM&#10;  Salary AS s&#10;GROUP BY&#10;  s.EmployeeID&#10;ORDER BY&#10;  SUM(s.Amount) DESC&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第5問">
+          <outline text="テーブルBelongToで現在所属しているEmployee（EndDateがNULL）をカウントし、レコードの多い順にDepartmentID（別名は「部署ID」）、レコード数を表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  bt.DepartmentID AS 部署ID&#10;  , COUNT(*) AS レコード数&#10;FROM&#10;  BelongTo AS bt&#10;WHERE&#10;  bt.EndDate IS NULL&#10;GROUP BY&#10;  bt.DepartmentID&#10;ORDER BY&#10;  COUNT(*) DESC&#10;;&#10;```"/>
+          </outline>
+        </outline>
+      </outline>
+      <outline text="【その16】重複を排除する" collapsed="true">
+        <outline text="書いてみよう">
+          <outline text="客の中で同じ住所のデータがあるよね。住所だけで一覧を出してくれ。ダブってるのはまとめてくれて構わないから" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT DISTINCT&#10;  c.Address AS 住所&#10;FROM&#10;  Customers AS c&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第1問">
+          <outline text="テーブルEmployeesから重複を除いてHireFiscalYearを求めなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT DISTINCT&#10;  e.HireFiscalYear&#10;FROM&#10;  Employees AS e&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第2問">
+          <outline text="テーブルSalesから重複を除いてCustomerID、ProductIDを求めなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT DISTINCT&#10;  s.CustomerID&#10;  , s.ProductID&#10;FROM&#10;  Sales AS s&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第3問">
+          <outline text="テーブルCustomersから重複を除いて、CustomerClassID、PrefecturalIDを求めなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT DISTINCT&#10;  c.CustomerClassID&#10;  , c.PrefecturalID&#10;FROM&#10;  Customers AS c&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第4問">
+          <outline text="テーブルSalesから重複を除いてCustomerID、ProductID、EmployeeIDを求めなさい。結果を第2問の結果と比較しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT DISTINCT&#10;  s.CustomerID&#10;  , s.ProductID&#10;  , s.EmployeeID&#10;FROM&#10;  Sales AS s&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第5問">
+          <outline text="テーブルProductsから重複を除いてPrice、CategoryIDを求めなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT DISTINCT&#10;  p.Price&#10;  , p.CategoryID&#10;FROM&#10;  Products AS p&#10;;&#10;```"/>
+          </outline>
+        </outline>
+      </outline>
+    </outline>
+    <outline text="第3章 複数のテーブルを扱う（A9～）">
+      <outline text="【その1】副問い合わせを使う（A9～）" collapsed="true">
+        <outline text="書いてみよう">
+          <outline text="ひょっとして全然売れてない商品があるんじゃないか？今まで一度も販売されたことがない商品の一覧を出してくれ" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  p.*&#10;FROM&#10;  Products AS p&#10;WHERE&#10;  p.ProductID NOT IN (&#10;    SELECT&#10;      s.ProductID&#10;    FROM&#10;      Sales AS s      &#10;  )&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第1問">
+          <outline text="テーブルEmployeesから各EmployeeIDについて、SalaryのAmountの最高が300,000以上のデータを取り出し、EmployeeID、EmployeeNameを表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  e.EmployeeID&#10;  , e.EmployeeName&#10;FROM&#10;  Employees AS e&#10;WHERE&#10;  e.EmployeeID IN (&#10;    SELECT&#10;      s.EmployeeID&#10;    FROM&#10;      Salary AS s&#10;    GROUP BY&#10;      s.EmployeeID&#10;    HAVING&#10;      MAX(s.Amount) &gt;= 300000&#10;  )&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第2問">
+          <outline text="テーブルSalesのQuantityが100以上のレコードを取り出し、SaleID、Quantity、CustomerID、CustomerNameを表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  s.SaleID&#10;  , s.Quantity&#10;  , s.CustomerID&#10;  (&#10;    SELECT&#10;      c.CustomerName&#10;    FROM&#10;      Customers AS c&#10;    WHERE&#10;      c.CustomerID = s.CustomerID&#10;    ) AS 顧客名&#10;FROM&#10;  Sales AS s&#10;WHERE&#10;  Quantity &gt;= 100&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第3問">
+          <outline text="テーブルProductsからSalesでQuantityの合計が100以上のレコードを取り出し、ProductID、ProductNameを表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  p.ProductID&#10;  , p.ProductName&#10;FROM&#10;  Products AS p&#10;WHERE&#10;  p.ProductID IN (&#10;    SELECT&#10;      s.ProductID&#10;    FROM&#10;      Sales AS s&#10;    GROUP BY&#10;      s.ProductID&#10;    HAVING&#10;      SUM(s.Quantity) &gt;= 100&#10;  )&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第4問">
+          <outline text="第1問でAmountの最高額（別名は「最高給与額」）も表示するよう変更しなさい。" _note="参考（第1問）&#10;テーブルEmployeesから各EmployeeIDについて、SalaryのAmountの最高が300,000以上のデータを取り出し、EmployeeID、EmployeeNameを表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  e.EmployeeID&#10;  , e.EmployeeName&#10;  , (&#10;    SELECT&#10;      MAX(s1.Amount)&#10;    FROM&#10;      Salary AS s1&#10;    WHERE&#10;      s1.EmployeeID = e.EmployeeID&#10;  ) AS 最高給与額&#10;FROM&#10;  Employees AS e&#10;WHERE&#10;  e.EmployeeID IN (&#10;    SELECT&#10;      s2.EmployeeID&#10;    FROM&#10;      Salary AS s2&#10;    GROUP BY&#10;      s2.EmployeeID&#10;    HAVING&#10;      MAX(s2.Amount) &gt;= 300000&#10;  )&#10;;```"/>
+          </outline>
+        </outline>
+        <outline text="第5問">
+          <outline text="第2問で商品名も表示するよう変更しなさい。" _note="参考（第2問）&#10;テーブルSalesのQuantityが100以上のレコードを取り出し、SaleID、Quantity、CustomerID、CustomerNameを表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  s.SaleID&#10;  , s.Quantity&#10;  , s.CustomerID&#10;  , (&#10;    SELECT&#10;      c.CustomerName&#10;    FROM&#10;      Customers AS c&#10;    WHERE&#10;      c.CustomerID = s.CustomerID&#10;  ) AS 顧客名&#10;  , (&#10;    SELECT&#10;      p.ProductName&#10;    FROM&#10;      Products AS p&#10;    WHERE&#10;      p.ProductID = s.ProductID&#10;  ) AS 商品名&#10;FROM&#10;  Sales AS s&#10;WHERE&#10;  s.Quantity &gt;= 100&#10;;&#10;```"/>
+          </outline>
+        </outline>
+      </outline>
+      <outline text="【その2】複数テーブルの結合を行う（1）（A10～）" collapsed="true">
+        <outline text="書いてみよう" collapsed="true">
+          <outline text="都道府県別に、それぞれ何人ずつ顧客がいるのか教えてくれ。そうそう、この前のは都道府県の名前が出てなかったぞ。ID だけじゃわからないのでちゃんと表示してくれ" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  c.PrefecturalID&#10;  , pf.PrefecturalName AS 都道府県名&#10;  , COUNT(*) AS 顧客数&#10;FROM&#10;  Customers AS c&#10;  JOIN&#10;    Prefecturals AS pf&#10;    ON pf.PrefecturalID = c.PrefecturalID&#10;GROUP BY&#10;  c.PrefecturalID&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第1問" collapsed="true">
+          <outline text="テーブルSalaryとEmployeesを結合してEmployeeName、PayDate、AmountをEmployeeID昇順で表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  e.EmployeeName&#10;  , s.PayDate&#10;  , s.Amount&#10;FROM&#10;  Salary AS s &#10;    JOIN&#10;      Employees AS e &#10;      ON e.EmployeeID = s.EmployeeID &#10;ORDER BY&#10;  s.EmployeeID ASC&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第2問" collapsed="true">
+          <outline text="テーブルSales、Customers、Employees、Productsを結合して、Sales.Quantityが200以上のデータについてQuantity、CustomerName、ProductName、EmployeeNameを表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  s.Quantity&#10;  , c.CustomerName&#10;  , p.ProductName&#10;  , e.EmployeeName&#10;FROM&#10;  Sales AS s&#10;    JOIN&#10;      Customers AS c&#10;      ON c.CustomerID = s.CustomerID &#10;    JOIN&#10;      Products AS p&#10;      ON p.ProductID = s.ProductID &#10;    JOIN&#10;      Employees AS e&#10;      ON e.EmployeeID = s.EmployeeID &#10;WHERE&#10;  s.Quantity &gt;= 200&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第3問" collapsed="true">
+          <outline text="テーブルSalesとProductsを結合し、SalesをProductIDでグループ化、Quantityの合計が300以上のデータについてQuantity合計、ProductID、ProductNameを表示しなさい。JOINを使用すること。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  s.ProductID&#10;  , p.ProductName&#10;  , SUM(s.Quantity) AS 数量合計&#10;FROM&#10;  Sales AS s&#10;  JOIN&#10;    Products AS p&#10;    ON p.ProductID = s.ProductID&#10;GROUP BY&#10;  s.ProductID&#10;  , p.ProductName&#10;HAVING&#10;  SUM(s.Quantity) &gt;= 300&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第4問" collapsed="true">
+          <outline text="第2問をJOINを用いずに書きなさい。" _note="参考（第2問）&#10;テーブルSales、Customers、Employees、Productsを結合して、Sales.Quantityが200以上のデータについてQuantity、CustomerName、ProductName、EmployeeNameを表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  s.Quantity&#10;  , (&#10;    SELECT&#10;      c.CustomerName&#10;    FROM&#10;      Customers AS c&#10;    WHERE&#10;      c.CustomerID = s.CustomerID&#10;  ) AS CustomerName&#10;  , (&#10;    SELECT&#10;      p.ProductName&#10;    FROM&#10;      Products AS p&#10;    WHERE&#10;      p.ProductID = s.ProductID&#10;  ) AS ProductName&#10;  , (&#10;    SELECT&#10;      e.EmployeeName&#10;    FROM&#10;      Employees AS e&#10;    WHERE&#10;      e.EmployeeID = s.EmployeeID&#10;  ) AS EmployeeName&#10;FROM&#10;  Sales AS s&#10;WHERE&#10;  s.Quantity &gt;= 200&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第5問" collapsed="true">
+          <outline text="テーブルCustomers、Prefecturals、CustomerClassesをWHERE句を使って結合し、PrefecturalID昇順で並べ、CustomerName、PrefecturalName、CustomerClassNameを表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  c.CustomerName&#10;  , pf.PrefecturalName&#10;  , cc.CustomerClassName&#10;FROM&#10;  Customers AS c&#10;  , Prefecturals AS pf&#10;  , CustomerClasses AS cc&#10;WHERE&#10;  pf.PrefecturalID = c.PrefecturalID&#10;  AND cc.CustomerClassID = c.CustomerClassID&#10;ORDER BY&#10;  c.PrefecturalID ASC&#10;;  &#10;```"/>
+          </outline>
+        </outline>
+      </outline>
+      <outline text="【その3】複数テーブルの結合を行う（2）（A10～）" collapsed="true">
+        <outline text="書いてみよう" collapsed="true">
+          <outline text="部門別の平均給与額を一覧で出してくれ。ちゃんと部門名を入れてくれよ" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  d.DepartmentName AS 部門名&#10;  , AVG(s.Amount) AS 部門別平均給与額&#10;FROM&#10;  Salary AS s&#10;  JOIN&#10;    BelongTo AS bt&#10;    ON bt.EmployeeID = s.EmployeeID&#10;  JOIN&#10;    Departments AS d&#10;    ON d.DepartmentID = bt.DepartmentID&#10;GROUP BY&#10;  d.DepartmentName&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第1問" collapsed="true">
+          <outline text="テーブルSales、Products、Categoriesを連結し、SalesをCategoryIDでグループ化、CategoryID、CategoryName、Quantityの合計を表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  p.CategoryID, &#10;  c.CategoryName AS カテゴリ名, &#10;  SUM(s.Quantity) AS 数量合計&#10;FROM&#10;  Sales AS s&#10;    JOIN&#10;      Products AS p&#10;      ON&#10;        p.ProductID = s.ProductID&#10;    JOIN&#10;      Categories AS c&#10;      ON c.CategoryID = p.CategoryID&#10;GROUP BY&#10;  p.CategoryID&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第2問" collapsed="true">
+          <outline text="テーブルSales、Customers、Prefecturalsを結合し、PrefecturalIDでグループ化、Quantityの合計、PrefecturalID、PrefecturalNameを表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  SUM(s.Quantity) AS 合計数量&#10;  , c.PrefecturalID&#10;  , MAX(pf.PrefecturalName) AS 県名&#10;FROM&#10;  Sales AS s&#10;    JOIN&#10;      Customers AS c&#10;      ON c.CustomerID = s.CustomerID &#10;    JOIN&#10;      Prefecturals AS pf&#10;      ON pf.PrefecturalID = c.PrefecturalID &#10;GROUP BY&#10;  c.PrefecturalID&#10;;&#10;```" collapsed="true">
+              <outline text="`GROUP BY`で集約したとき、選択リストで許可されるのは集約対象列または集約関数のみ。"/>
+              <outline text="したがって、`MAX()`、`MIN()`等を用いて〝代表値を出力する〟形式にしないといけない。"/>
+              <outline text="SQUATでは、`MAX()`なしでも通ってしまうので注意。"/>
+            </outline>
+          </outline>
+        </outline>
+        <outline text="第3問" collapsed="true">
+          <outline text="テーブルSales、Customers、CustomerClassesを結合し、CustomerClassIDでグループ化、Quantityの最大値、CustomerClassID、CustomerClassNameを表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  MAX(s.Quantity) AS 最大数量&#10;  , c.CustomerClassID&#10;  , MAX(cc.CustomerClassName) AS 顧客クラス名&#10;FROM&#10;  Sales AS s&#10;  JOIN&#10;    Customers AS c&#10;    ON c.CustomerID = s.CustomerID&#10;  JOIN&#10;    CustomerClasses AS cc&#10;    ON cc.CustomerClassID = c.CustomerClassID&#10;GROUP BY&#10;  c.CustomerClassID&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第4問" collapsed="true">
+          <outline text="第2問をJOINを用いずに書きなさい。" _note="参考（第2問）&#10;テーブルSales、Customers、Prefecturalsを結合し、PrefecturalIDでグループ化、Quantityの合計、PrefecturalID、PrefecturalNameを表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  SUM(s.Quantity) AS 合計数量&#10;  , c.PrefecturalID, &#10;  , MAX(pf.PrefecturalName) AS 県名&#10;FROM&#10;  Sales AS s&#10;  , Customers AS c&#10;  , Prefecturals AS pf&#10;WHERE&#10;  s.CustomerID = c.CustomerID&#10;  AND c.PrefecturalID = pf.PrefecturalID&#10;GROUP BY&#10;  c.PrefecturalID&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第5問" collapsed="true">
+          <outline text="第3問をJOINを用いずに書きなさい。" _note="参考（第3問）&#10;テーブルSales、Customers、CustomerClassesを結合し、CustomerClassIDでグループ化、Quantityの最大値、CustomerClassID、CustomerClassNameを表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  MAX(s.Quantity) AS 最大数量&#10;  , c.CustomerClassID&#10;  , MAX(cc.CustomerClassName) AS 顧客クラス名&#10;FROM&#10;  Sales AS s&#10;  , Customers AS c&#10;  , CustomerClasses AS cc&#10;WHERE&#10;  s.CustomerID = c.CustomerID&#10;  AND c.CustomerClassID = cc.CustomerClassID&#10;GROUP BY&#10;  c.CustomerClassID&#10;;&#10;```"/>
+          </outline>
+        </outline>
+      </outline>
+      <outline text="【その4】外部結合を使う（A11～）" collapsed="true">
+        <outline text="書いてみよう">
+          <outline text="金額ベースで全部の売上についての平均を知りたいな。全部の商品の平均販売単価を一覧で出してくれ" _note="「平均販売単価」というよりは、〝1販売レコードあたりの平均売上〟である。">
+            <outline text="※" _note="```&#10;SELECT&#10;  p.ProductName&#10;  , AVG(p.Price * &#10;    CASE&#10;      WHEN s.Quantity IS NULL THEN 0&#10;      ELSE s.Quantity&#10;    END&#10;  ) AS 平均販売価格&#10;FROM&#10;  Products AS p&#10;  LEFT JOIN&#10;    Sales AS s&#10;    ON s.ProductID = p.ProductID&#10;GROUP BY&#10;  p.ProductName&#10;;&#10;```">
+              <outline text="問いは「金額ベースで全部の売上についての平均を知りたいな。全部の商品の平均販売単価を一覧で出してくれ」だが、正解クエリのエイリアスが「平均販売価格」となっている。"/>
+              <outline text="〝1販売レコードあたりの平均売上〟ぐらいの言い方にしないといけないのでは？"/>
+            </outline>
+          </outline>
+        </outline>
+        <outline text="第1問">
+          <outline text="テーブルCustomers、Salesを外部結合してCustomerIDごとのQuantity合計を求めてCustomerNameと合計を表示しなさい。ただしSalesデータが存在しないCustomerIDの合計は0を表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  c.CustomerName&#10;  , SUM( &#10;    CASE&#10;      WHEN s.Quantity IS NULL THEN 0&#10;      ELSE s.Quantity &#10;    END&#10;  ) AS 販売数量合計&#10;FROM&#10;  Customers AS c&#10;  LEFT OUTER JOIN&#10;    Sales AS s&#10;    ON s.CustomerID = c.CustomerID&#10;GROUP BY&#10;  c.CustomerName&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第2問">
+          <outline text="テーブルEmployees、Salesを外部結合し、EmployeeIDごとのSalesレコード数を求めてEmployeeID、社員名と販売件数を表示しなさい。ただし、Salesデータが存在しない場合は0を表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  e.EmployeeID, &#10;  MAX(e.EmployeeName) AS 社員名, &#10;  SUM(&#10;    CASE&#10;      WHEN s.EmployeeID IS NULL THEN 0&#10;      ELSE 1&#10;    END&#10;   ) AS 販売件数&#10;FROM&#10;  Employees AS e&#10;    LEFT OUTER JOIN&#10;      Sales AS s&#10;      ON&#10;        s.EmployeeID = e.EmployeeID &#10;GROUP BY&#10;  e.EmployeeID&#10;;&#10;```">
+              <outline text="`EmployeeID`でグループ化した場合、複数レコードが集約されたとしても`EmployeeName`は1種類しかないことを期待するが、保証されているわけではないので、`SELECT`する際には`MAX()`なり`MIN()`なりで明示的に〝1つに絞る〟ということをしないといけない。"/>
+            </outline>
+          </outline>
+        </outline>
+        <outline text="第3問">
+          <outline text="テーブルPrefecturals、Customersを外部結合し、PrefecturalIDごとのCustomersレコード数を求め、PrefecturalNameとレコード数を表示しなさい。ただしCustomersデータが存在しない場合は0を表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  pf.PrefecturalName&#10;  , SUM(&#10;    CASE&#10;      WHEN c.PrefecturalID IS NULL THEN 0&#10;      ELSE 1&#10;    END&#10;   ) AS 顧客数&#10;FROM&#10;  Prefecturals AS pf&#10;  LEFT JOIN&#10;    Customers AS c&#10;      ON c.PrefecturalID = pf.PrefecturalID&#10;GROUP BY&#10;  pf.PrefecturalName  &#10;;&#10;```" collapsed="true">
+              <outline text="`Prefectural`テーブルからは全レコードが抽出される。"/>
+              <outline text="紐付けられる`Customers`テーブルのレコードがない場合、`c.PrefefcturalID`は`NULL`。"/>
+              <outline text="したがって、上記クエリで当該都道府県の`PrefecturalID`を持つ`Customers`テーブルのレコードをカウントすることができる。"/>
+            </outline>
+          </outline>
+        </outline>
+        <outline text="第4問">
+          <outline text="テーブルEmployees、Salesを使った副問い合わせを外部結合し、EmployeeIDごとの販売件数を求めなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  e.EmployeeID&#10;  , CASE&#10;    WHEN s_cnt.cnt IS NULL THEN 0&#10;    ELSE s_cnt.cnt&#10;  END AS 販売件数&#10;FROM&#10;  Employees AS e&#10;  LEFT JOIN&#10;    (&#10;      SELECT&#10;        s.EmployeeID&#10;        , COUNT(*) AS cnt&#10;      FROM&#10;        Sales AS s&#10;      GROUP BY&#10;        s.EmployeeID&#10;    )  AS s_cnt&#10;    ON s_cnt.EmployeeID = e.EmployeeID&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第5問">
+          <outline text="テーブルEmployees、SalaryからEmployeeごとの&apos;2007-02-25&apos;支給のAmountを求めて、EmployeeName、Amount（別名は「支給額」）を表示しなさい。Amountデータが存在しない場合は0を表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  e.EmployeeName&#10;  , CASE&#10;    WHEN ss.Amount IS NULL THEN 0&#10;    ELSE ss.Amount&#10;  END AS 支給額&#10;FROM&#10;  Employees AS e&#10;  LEFT JOIN&#10;    (&#10;      SELECT&#10;        s.EmployeeID&#10;        , s.Amount&#10;      FROM&#10;        Salary AS s&#10;      WHERE&#10;        s.PayDate = &apos;2007-02-25&apos;&#10;    ) AS ss&#10;    ON&#10;      ss.EmployeeID = e.EmployeeID&#10;;&#10;```"/>
+          </outline>
+        </outline>
+      </outline>
+      <outline text="【その5】自己結合を使う（A11～）" collapsed="true">
+        <outline text="書いてみよう" collapsed="true">
+          <outline text="違うカテゴリーのものを組み合わせて、セット商品にすることを考えている。ついては、カテゴリーの違う商品同士で合計価格が2500円以上になる組み合わせの一覧を出してくれ" _note="！: 設問の誤り。「2500円以上」ではなく、「2500円**を超える**」である。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  p1.ProductName AS 商品名1&#10;  , p2.ProductName AS 商品名2&#10;  , (p1.Price + p2.Price) AS セット価格&#10;FROM&#10;  Products AS p1&#10;  JOIN&#10;    Products AS p2&#10;    ON p2.ProductID &gt; p1.ProductID&#10;    AND p2.CategoryID &lt;&gt; p1.CategoryID&#10;WHERE&#10;  (p1.Price + p2.Price) &gt; 2500&#10;;&#10;```"/>
+            <outline text="`p1.ProductID &lt; p2.ProductID`">
+              <outline text="同じ組合せの左右入れ替えを防止。"/>
+              <outline text="次の2組は同じ組み合わせである。">
+                <outline text="`p1.ProductID: 1`と`p2.ProductID: 2`"/>
+                <outline text="`p1.ProductID: 2`と`p2.ProductID: 1`"/>
+              </outline>
+              <outline text="したがって、後者の組合せを排除するためにこの結合条件を使う。"/>
+            </outline>
+          </outline>
+        </outline>
+        <outline text="第1問" collapsed="true">
+          <outline text="同じカテゴリーの商品同士を組み合わせて、商品名をそれぞれ表示しなさい。">
+            <outline text="※" _note="```&#10;SELECT&#10;  p1.ProductName AS 商品名1, &#10;  p2.ProductName AS 商品名2&#10;FROM&#10;  Products AS p1&#10;    JOIN&#10;      Products AS p2&#10;      ON &#10;        p1.ProductID &lt; p2.ProductID&#10;        AND p1.CategoryID = p2.CategoryID&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第2問" collapsed="true">
+          <outline text="同じ都道府県の顧客同士で、かつ同じCustomerClassIDを持つ顧客同士を組み合わせて、顧客名をそれぞれ表示しなさい。">
+            <outline text="※" _note="```&#10;SELECT&#10;  c1.CustomerName AS 顧客名1&#10;  , c2.CustomerName AS 顧客名2&#10;FROM&#10;  Customers AS c1&#10;  JOIN&#10;    Customers AS c2&#10;    ON c1.CustomerID &lt; c2.CustomerID&#10;    AND c1.PrefecturalID = c2.PrefecturalID&#10;    AND c1.CustomerClassID = c2.CustomerClassID&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第3問" collapsed="true">
+          <outline text="従業員同士で、かつ年齢が自分よりも年上（つまり自分よりもBirthdayの値が小さい）人との組み合わせを表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  e1.EmployeeName AS 従業員名1&#10;  , e2.EmployeeName AS 従業員名2&#10;FROM&#10;  Employees AS e1&#10;  JOIN&#10;    Employees AS e2&#10;    ON e1.Birthday &gt; e2.Birthday &#10;;&#10;```"/>
+            <outline text="生年月日の大小比較は、左右逆の比較もしなくてはいけないので、`ON`句で`e1.EmployeeID &lt; e2.EmployeeID`条件を指定してはいけない。"/>
+          </outline>
+        </outline>
+        <outline text="第4問" collapsed="true">
+          <outline text="カテゴリー同士を組み合わせて、カテゴリー名をそれぞれ表示しなさい（別名は「カテゴリー1」「カテゴリー2」）。" _note="！: 問題誤り。別名は「カテゴリ**名**1」と「カテゴリ**名**2」">
+            <outline text="※" _note="```&#10;SELECT&#10;  cat1.CategoryName AS カテゴリ名1&#10;  , cat2.CategoryName AS カテゴリ名2&#10;FROM&#10;  Categories AS cat1&#10;  JOIN&#10;    Categories AS cat2&#10;    ON cat1.CategoryID &lt; cat2.CategoryID&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第5問">
+          <outline text="第2問に対して、PrefecturalIDが13以外のものだけに絞り込んでください。" _note="参考（第2問）&#10;同じ都道府県の顧客同士で、かつ同じCustomerClassIDを持つ顧客同士を組み合わせて、顧客名をそれぞれ表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  c1.CustomerName AS 顧客名1&#10;  , c2.CustomerName AS 顧客名2&#10;FROM&#10;  Customers AS c1&#10;  JOIN&#10;    Customers AS c2&#10;    ON c1.CustomerID &lt; c2.CustomerID&#10;    AND c1.PrefecturalID = c2.PrefecturalID&#10;    AND c1.CustomerClassID = c2.CustomerClassID&#10;WHERE&#10;  c1.PrefecturalID &lt;&gt; 13&#10;;&#10;```"/>
+          </outline>
+        </outline>
+      </outline>
+      <outline text="【その6】相関副問い合わせを使う（A13～）" collapsed="true">
+        <outline text="書いてみよう">
+          <outline text="商品ごとの販売数量の平均を上回った日を一覧で出してくれ。商品単位で比較してくれよ。あ、商品名は当然つけてくれよ。結果はProductIDの昇順、SaleDateの降順で出力してくれ。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  p.ProductName&#10;  , s1.SaleDate&#10;FROM&#10;  Sales AS s1&#10;    JOIN&#10;      Products AS p&#10;      ON s1.ProductID = p.ProductID&#10;WHERE&#10;  s1.Quantity &gt; (&#10;    SELECT&#10;      AVG(s2.Quantity)&#10;    FROM&#10;      Sales AS s2&#10;    WHERE&#10;      s1.ProductID = s2.ProductID&#10;  )&#10;ORDER BY&#10;  p.ProductID ASC&#10;  , s1.SaleDate DESC&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第1問">
+          <outline text="テーブルSalesでProductIDごとのQuantityの最大値を求め、ProductID、ProductName、最大QuantityをProductID昇順で表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT DISTINCT&#10;  s1.ProductID&#10;  , p.ProductName&#10;  , s1.Quantity&#10;FROM&#10;  Sales AS s1 &#10;  JOIN&#10;    Products AS p &#10;    ON  p.ProductID = s1.ProductID&#10;WHERE&#10;  s1.Quantity = (&#10;    SELECT&#10;      MAX(s2.Quantity)&#10;    FROM&#10;      Sales AS s2&#10;    WHERE&#10;      s1.ProductID = s2.ProductID &#10;  )&#10;ORDER BY&#10;  s1.ProductID ASC&#10;;&#10;```"/>
+            <outline text="最大数量で複数回販売された場合、`ProductID`・`ProductName`・`Quantity`の組み合わせが複数回選択される。"/>
+            <outline text="したがって、`DISTINCT`で1つに絞る。"/>
+          </outline>
+        </outline>
+        <outline text="第2問">
+          <outline text="テーブルProductsから、テーブルSalesにあるProductIDとそのProductNameを表示しなさい（第3問および、第3章その9第3問の結果と比較しなさい）。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  p.ProductID&#10;  , p.ProductName&#10;FROM&#10;  Products AS p&#10;WHERE&#10;  EXISTS&#10;  (&#10;   SELECT&#10;     &apos;X&apos;&#10;   FROM&#10;     Sales AS s&#10;   WHERE&#10;     s.ProductID = p.ProductID &#10;  )&#10;;&#10;```"/>
+            <outline text="サブクエリ内の`&apos;X&apos;`は、別に何でも良い。（`1`にする場合も多い。）"/>
+            <outline text="`EXISTS`は、〝行があるかどうか〟を判定する。"/>
+          </outline>
+        </outline>
+        <outline text="第3問">
+          <outline text="テーブルProductsから、テーブルSalesにないProductIDとそのProductNameを表示しなさい（第2問および、第3章その10第3問の結果と比較しなさい）。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  p.ProductID&#10;  , p.ProductName&#10;FROM&#10;  Products AS p&#10;WHERE&#10;  NOT EXISTS (&#10;    SELECT&#10;      &apos;X&apos;     &#10;    FROM&#10;      Sales AS s&#10;   WHERE&#10;      p.ProductID = s.ProductID &#10;  )&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第4問">
+          <outline text="第1問をJOINを使って書きなさい。" _note="参考（第1問）&#10;テーブルSalesでProductIDごとのQuantityの最大値を求め、ProductID、ProductName、最大QuantityをProductID昇順で表示しなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  subquery_s.ProductID&#10;  , p.ProductName&#10;  , ss.Quantity&#10;FROM&#10;  (&#10;    SELECT&#10;      s.ProductID&#10;      , MAX(s.Quantity) AS Quantity&#10;    FROM&#10;      Sales AS s&#10;    GROUP BY&#10;      s.ProductID&#10;  ) AS ss&#10;  JOIN&#10;    Products AS p&#10;    ON p.ProductID = ss.ProductID&#10;ORDER BY&#10;  ss.ProductID ASC&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第5問">
+          <outline text="テーブルSalesで、ProductIDごとのQuantityの平均値と最大値を求め、最大値÷10が平均値以上のProductIDとProductNameをProductID順に表示しなさい。">
+            <outline text="※" _note="```&#10;SELECT&#10;  p.ProductID&#10;  , p.ProductName&#10;FROM&#10;  Products AS p&#10;WHERE&#10;  p.ProductID IN (&#10;    SELECT&#10;      p.ProductID&#10;    FROM&#10;      Sales AS s&#10;    WHERE&#10;      s.ProductID = p.ProductID&#10;    HAVING&#10;      MAX(s.Quantity) / 10 &gt;= AVG(s.Quantity)&#10;  )&#10;ORDER BY&#10;  p.ProductID&#10;;&#10;&#10;```"/>
+            <outline text="※" _note="```&#10;SELECT&#10;  subquery_s.ProductID, &#10;  p.ProductName&#10;FROM&#10;  Products AS p&#10;  JOIN&#10;    (&#10;      SELECT&#10;        s.ProductID, &#10;        AVG(s.Quantity) AS avg_qt, &#10;        MAX(s.Quantity) AS max_qt&#10;      FROM&#10;        Sales AS s&#10;      GROUP BY&#10;        s.ProductID&#10;    ) subquery_s&#10;    ON&#10;      subquery_s.ProductID = p.ProductID&#10;WHERE&#10;  (subquery_s.max_qt / 10) &gt; subquery_s.avg_qt&#10;ORDER BY&#10;  subquery_s.ProductID&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="番外編その1">
+          <outline text="「Sales」テーブルの中から、同じ商品の中で、その日がその商品の「それ以前の販売日の中で最高の売上数量を超えた最初の日」（売上数量の最高を更新した日）を抽出せよ。" _note="出力項目：ProductID, SaleDate, Quantity, ProductName&#10;出力順：ProductID昇順、SaleDate昇順" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  s1.ProductID&#10;  , s1.SaleDate&#10;  , s1.Quantity&#10;  , p.ProductName&#10;FROM&#10;  Sales AS s1&#10;  JOIN&#10;    Products AS p&#10;    ON p.ProductID = s1.ProductID&#10;WHERE&#10;  s1.Quantity &gt; (&#10;    SELECT&#10;      MAX(s2.Quantity)&#10;    FROM&#10;      Sales AS s2&#10;    WHERE&#10;      s2.SaleDate &lt; s1.SaleDate&#10;      AND s2.ProductID = s1.ProductID&#10;  )&#10;ORDER BY&#10;  s1.ProductID ASC&#10;  , s1.SaleDate ASC&#10;;&#10;```">
+              <outline text="最初の売上日は除外している。">
+                <outline text="サブクエリ内`WHERE`句の`s2.SaleDate &lt; s1.SaleDate`が成立せず、サブクエリが結果セットを返さないため。"/>
+              </outline>
+              <outline text="サブクエリ全体を`COALESCE()`で囲んで、`NULL`を`0`に置き換えるようにすれば、最初の売上日も結果セットに含ませることができる。">
+                <outline text="※（`WHERE`句の部分のみ）" _note="```&#10;WHERE&#10;  s1.Quantity &gt; &#10;    COALESCE(&#10;      (&#10;        SELECT&#10;          MAX(s2.Quantity)&#10;        FROM&#10;          Sales AS s2&#10;        WHERE&#10;          s2.SaleDate &lt; s1.SaleDate&#10;          AND s2.ProductID = s1.ProductID&#10;      )&#10;      , 0&#10;    )&#10;```"/>
+              </outline>
+            </outline>
+          </outline>
+        </outline>
+        <outline text="番外編その2">
+          <outline text="商品の価格に順位をつけ、商品ID、商品名、価格、順位を表示しなさい。" _note="出力項目：ProductID, ProductName, Price, 順位&#10;出力順：順位昇順、ProductID昇順" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  p.ProductID&#10;  , p.ProductName&#10;  , p.Price&#10;  , (&#10;    SELECT&#10;      COUNT(*)&#10;    FROM&#10;      Products AS sub_p&#10;    WHERE&#10;      sub_p.Price &gt;= p.Price&#10;  ) AS 順位&#10;FROM&#10;  Products AS p&#10;ORDER BY&#10;  順位 ASC&#10;  , p.ProductID ASC&#10;;&#10;```">
+              <outline text="`SELECT`句を実行する際に、各行で〝自分の行の`Price`以上のレコードの件数を数える〟という考え方。"/>
+            </outline>
+          </outline>
+        </outline>
+        <outline text="番外編その3">
+          <outline text="売上レコードごとに売上高を求め、順位をつけなさい。その上で上位30位までの商品ID、商品名、売上日、商品価格、売上数量、売上高、順位を表示しなさい。" _note="出力項目：ProductID, ProductName, SaleDate, Price, Quantity, 売上, 売上順位&#10;出力順：売上順位昇順、ProductID昇順、SaleDate降順">
+            <outline text="※" _note="```&#10;SELECT&#10;  p.ProductID&#10;  , p.ProductName&#10;  , s.SaleDate&#10;  , p.Price&#10;  , s.Quantity&#10;  , p.Price * s.Quantity AS 売上&#10;  , (&#10;    SELECT&#10;      COUNT(*)&#10;    FROM&#10;      Sales AS sub_s&#10;      JOIN&#10;        Products AS sub_p&#10;        ON sub_p.ProductID = sub_s.ProductID&#10;    WHERE&#10;      sub_p.Price * sub_s.Quantity &gt;= p.Price * s.Quantity&#10;  ) AS 売上順位&#10;FROM&#10;  Sales AS s&#10;  JOIN&#10;    Products AS p&#10;    ON p.ProductID = s.ProductID&#10;ORDER BY&#10;  売上順位 ASC&#10;  , p.ProductID ASC&#10;  , s.SaleDate DESC&#10;LIMIT&#10;  30&#10;;&#10;```"/>
+          </outline>
+        </outline>
+      </outline>
+      <outline text="【その7】UNION ALLを使う" collapsed="true">
+        <outline text="書いてみよう">
+          <outline text="世の中どんな名前があるのか興味あるよね。一覧で出してくれ" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  c.CustomerName AS 氏名&#10;FROM&#10;  Customers AS c&#10;UNION ALL&#10;SELECT&#10;  e.EmployeeName AS 氏名&#10;FROM&#10;  Employees AS e&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第1問">
+          <outline text="テーブルDepartmentsとCategoriesをUNION ALLで1つにまとめなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  dp.DepartmentID AS ID&#10;  , dp.DepartmentName AS 名前&#10;FROM&#10;  Departments AS dp&#10;UNION ALL&#10;SELECT&#10;  cat.CategoryID AS ID&#10;, cat.CategoryName AS 名前&#10;FROM&#10;  Categories AS cat&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第2問">
+          <outline text="テーブルDepartmentsとCategoriesをテーブル名を付してUNION ALLで1つにまとめなさい。結果をテーブル名、IDの昇順に並べなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT &#10;  &apos;Departments&apos; AS テーブル名 &#10;  , dp.DepartmentID AS ID &#10;  , dp.DepartmentName AS 名前 &#10;FROM &#10;  Departments AS dp&#10;UNION ALL &#10;SELECT &#10;  &apos;Categories&apos; AS テーブル名 &#10;  , cat.CategoryID AS ID &#10;, cat.CategoryName AS 名前 &#10;FROM &#10;  Categories AS cat&#10;ORDER BY &#10;  テーブル名 ASC&#10;  , ID ASC&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第3問">
+          <outline text="テーブルDepartments、CustomerClasses、Categories、PrefecturalsをUNION ALLで1つにまとめなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  dp.DepartmentID AS ID&#10;  , dp.DepartmentName AS 名前&#10;FROM&#10;  Departments AS dp&#10;UNION ALL&#10;SELECT&#10;  cc.CustomerClassID AS ID&#10;  , cc.CustomerClassName AS 名前&#10;FROM&#10;  CustomerClasses AS cc&#10;UNION ALL&#10;SELECT&#10;  cat.CategoryID AS ID&#10;  , cat.CategoryName AS 名前&#10;FROM&#10;  Categories AS cat&#10;UNION ALL&#10;SELECT&#10;  pf.PrefecturalID AS ID&#10;  , pf.PrefecturalName AS 名前&#10;FROM&#10;  Prefecturals AS pf&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第4問">
+          <outline text="第3問の各テーブルにテーブル名を付してUNION ALLで1つにまとめなさい。結果をテーブル名、IDの昇順に並べなさい。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  &apos;Departments&apos; AS テーブル名&#10;  , dp.DepartmentID AS ID&#10;  , dp.DepartmentName AS 名前&#10;FROM&#10;  Departments AS dp&#10;UNION ALL&#10;SELECT&#10;  &apos;CustomerClasses&apos; AS テーブル名&#10;  , cc.CustomerClassID AS ID&#10;  , cc.CustomerClassName AS 名前&#10;FROM&#10;  CustomerClasses AS cc&#10;UNION ALL&#10;SELECT&#10;  &apos;Categories&apos; AS テーブル名&#10;  , cat.CategoryID AS ID&#10;  , cat.CategoryName AS 名前&#10;FROM&#10;  Categories AS cat&#10;UNION ALL&#10;SELECT&#10;  &apos;Prefecturals&apos; AS テーブル名&#10;  , pf.PrefecturalID AS ID&#10;  , pf.PrefecturalName AS 名前&#10;FROM&#10;  Prefecturals AS pf&#10;ORDER BY&#10;  テーブル名 ASC&#10;  , ID ASC&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第5問">
+          <outline text="テーブルSalesの中から、CustomerClassID=2（個人）の顧客でQuantityが10以上のデータと、CustomerClassID=1（法人）の顧客でQuantityが100以上のデータをUNION ALLで1つにまとめなさい。SaleID、ProductID、Quantity、CustomerClassID、CustomerNameの各項目を表示しなさい（第3章その8第5問、その9第5問、その10第4問、その10第5問の結果と比較しなさい）。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  s1.SaleID&#10;  , s1.ProductID&#10;  , s1.Quantity&#10;  , c1.CustomerClassID&#10;  , c1.CustomerName&#10;FROM&#10;  Sales AS s1&#10;  JOIN&#10;    Customers AS c1&#10;    ON c1.CustomerID = s1.CustomerID&#10;WHERE&#10;  c1.CustomerClassID = 2&#10;  AND s1.Quantity &gt;= 10&#10;UNION ALL&#10;SELECT&#10;  s2.SaleID&#10;  , s2.ProductID&#10;  , s2.Quantity&#10;  , c2.CustomerClassID&#10;  , c2.CustomerName&#10;FROM&#10;  Sales AS s2&#10;  JOIN&#10;    Customers AS c2&#10;    ON c2.CustomerID = s2.CustomerID&#10;WHERE&#10;  c2.CustomerClassID = 1&#10;  AND s2.Quantity &gt;= 100&#10;;&#10;```"/>
+          </outline>
+        </outline>
+      </outline>
+      <outline text="【その8】INTERSECTを使う" collapsed="true">
+        <outline text="書いてみよう">
+          <outline text="給料日でもしっかりと売上を上げる奴ってやっぱり真面目な感じがするよね。一覧で出してみてくれ" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  e1.EmployeeName AS 氏名&#10;  , sla.PayDate AS 日付&#10;FROM&#10;  Employees AS e1&#10;  JOIN&#10;    Salary AS sla&#10;    ON sla.EmployeeID = e1.EmployeeID&#10;INTERSECT&#10;SELECT&#10;  e2.EmployeeName AS 氏名&#10;  , sle.SaleDate AS 氏名&#10;FROM&#10;  Employees AS e2&#10;  JOIN&#10;    Sales AS sle&#10;    ON sle.EmployeeID = e2.EmployeeID&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第1問">
+          <outline text="テーブルCustomersとEmployeesをINTERSECTで1つにまとめ、それぞれのID順に表示しなさい（第3章その8第1問、その10第1問の結果と比較しなさい）。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  c.CustomerID AS ID&#10;  , c.CustomerName AS 名前&#10;FROM&#10;  Customers AS c&#10;INTERSECT&#10;SELECT&#10;  e.EmployeeID AS ID&#10;  , e.EmployeeName AS 名前&#10;FROM&#10;  Employees AS e&#10;ORDER BY&#10; ID ASC&#10;;&#10;```">
+              <outline text="結果セットなしだが、正解である……。"/>
+            </outline>
+          </outline>
+        </outline>
+        <outline text="第2問">
+          <outline text="テーブルEmployeesの、EmployeeIDとEmployeeNameを表示させたものをINTERSECTで1つにまとめなさい。結果はEmployeeID順に表示しなさい（第3章その8第2問、その10第2問の結果と比較しなさい）。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  e.EmployeeID AS ID&#10;  , e.EmployeeName AS 名前&#10;FROM&#10;  Employees AS e&#10;INTERSECT&#10;SELECT&#10;  e.EmployeeID AS ID&#10;  , e.EmployeeName AS 名前&#10;FROM&#10;  Employees AS e&#10;ORDER BY&#10;  ID ASC&#10;;&#10;```">
+              <outline text="単に`Employees`テーブルの全レコードが出力されるだけ……。"/>
+            </outline>
+          </outline>
+        </outline>
+        <outline text="第3問">
+          <outline text="テーブルProductsとSalesのProductIDをINTERSECTで1つにまとめ、ProductID順に表示しなさい（第3章その6第2問、その8第3問、その10第3問の結果と比較しなさい）。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  p.ProductID&#10;FROM&#10;  Products AS p&#10;INTERSECT&#10;SELECT&#10;  s.ProductID&#10;FROM&#10;  Sales AS s&#10;ORDER BY&#10;  ProductID&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第4問">
+          <outline text="テーブルSalesの中から、SaleDateが&apos;2006-10-01&apos; と &apos;2006-12-31&apos;の間でQuantityが10以上のデータと、SaleDateが&apos;2007-01-01&apos; と &apos;2007-03-31&apos;の間でQuantityが10以上のデータと、SaleDateが&apos;2007-04-01&apos; と &apos;2007-06-30&apos;の間でQuantityが10以上のデータをINTERSECTで1つにまとめなさい。CustomerIDとProductIDを昇順に並べて表示しなさい（第3章その8第4問の結果と比較しなさい）。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  s.CustomerID&#10;  , s.ProductID&#10;FROM&#10;  Sales AS s&#10;WHERE&#10;  s.SaleDate BETWEEN &apos;2006-10-01&apos; AND &apos;2006-12-31&apos;&#10;  AND s.Quantity &gt;= 10&#10;INTERSECT&#10;SELECT&#10;  s.CustomerID&#10;  , s.ProductID&#10;FROM&#10;  Sales AS s&#10;WHERE&#10;  s.SaleDate BETWEEN &apos;2007-01-01&apos; AND &apos;2007-03-31&apos;&#10;  AND s.Quantity &gt;= 10&#10;INTERSECT&#10;SELECT&#10;  s.CustomerID&#10;  , s.ProductID&#10;FROM&#10;  Sales AS s&#10;WHERE&#10;  s.SaleDate BETWEEN &apos;2007-04-01&apos; AND &apos;2007-06-30&apos;&#10;  AND s.Quantity &gt;= 10&#10;ORDER BY&#10;  CustomerID ASC&#10;  , ProductID ASC&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第5問" collapsed="true">
+          <outline text="テーブルSalesの中から、CustomerClassID=2（個人）の顧客でQuantityが10以上の場合と、CustomerClassID=1（法人）の顧客でQuantityが100以上の場合をINTERSECTで1つにまとめなさい。ProductIDをその順に表示しなさい（第3章その7第5問、その8第5問、その10第4問、その10第5問の結果と比較しなさい）。">
+            <outline text="※" _note="```&#10;SELECT&#10;  s.ProductID&#10;FROM&#10;  Sales AS s&#10;  JOIN&#10;    Customers AS c&#10;    ON c.CustomerID = s.CustomerID&#10;WHERE&#10;  c.CustomerClassID = 2&#10;  AND s.Quantity &gt;= 10&#10;INTERSECT&#10;SELECT&#10;  s.ProductID&#10;FROM&#10;  Sales AS s&#10;  JOIN&#10;    Customers AS c&#10;    ON c.CustomerID = s.CustomerID&#10;WHERE&#10;  c.CustomerClassID = 1&#10;  AND s.Quantity &gt;= 100&#10;ORDER BY&#10;  ProductID&#10;;&#10;```"/>
+          </outline>
+        </outline>
+      </outline>
+      <outline text="【その9】EXCEPTを使う" collapsed="true">
+        <outline text="書いてみよう">
+          <outline text="まだ販売の実績がない社員もいると思うんだ。一覧で出してみてくれ" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  e.EmployeeName&#10;FROM&#10;  Employees AS e&#10;EXCEPT&#10;SELECT&#10;  e.EmployeeName&#10;FROM&#10;  Sales AS s&#10;  JOIN&#10;    Employees AS e&#10;    ON e.EmployeeID = s.EmployeeID&#10;;&#10;```"/>
+            <outline text="※" _note="```&#10;SELECT&#10;  e1.EmployeeName&#10;FROM&#10;  Employees AS e1&#10;WHERE&#10;  e1.EmployeeID IN (&#10;    SELECT&#10;      e2.EmployeeID&#10;    FROM&#10;      Employees AS e2&#10;    EXCEPT&#10;    SELECT&#10;      s.EmployeeID&#10;    FROM&#10;      Sales AS s&#10;  )&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第1問">
+          <outline text="テーブルCustomersとEmployeesをEXCEPTで1つにまとめ、それぞれのID順に表示しなさい（第3章その8第1問、その9第1問の結果と比較しなさい）。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT &#10;  c.CustomerID AS ID&#10;  , c.CustomerName AS 名前 &#10;FROM &#10;  Customers AS c&#10;EXCEPT&#10;SELECT&#10;  e.EmployeeID AS ID&#10;  , e.EmployeeName AS 名前 &#10;FROM &#10;  Employees AS e&#10;ORDER BY&#10;  ID ASC  &#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第2問">
+          <outline text="テーブルEmployeesの、EmployeeIDとEmployeeNameを表示させたものをEXCEPTで1つにまとめなさい。結果はEmployeeID順に表示しなさい（第3章その8第2問、その9第2問の結果と比較しなさい）。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT &#10;  e.EmployeeID AS ID&#10;  , e.EmployeeName AS 名前 &#10;FROM &#10;  Employees AS e&#10;EXCEPT &#10;SELECT&#10;  e.EmployeeID AS ID&#10;  , e.EmployeeName AS 名前 &#10;FROM &#10;  Employees AS e&#10;ORDER BY &#10;  ID ASC&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第3問">
+          <outline text="テーブルProductsとSalesのProductIDをEXCEPTで1つにまとめ、ProductID順に表示しなさい（第3章その6第3問、その8第3問、その9第3問の結果と比較しなさい）。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  p.ProductID&#10;FROM&#10;  Products AS p&#10;EXCEPT&#10;SELECT&#10;  s.ProductID&#10;FROM&#10;  Sales AS s&#10;ORDER BY&#10;  ProductID ASC&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第4問">
+          <outline text="テーブルSalesの中の、CustomerClassID=1（法人）の顧客でQuantityが100以上のデータのProductIDから、CustomerClassID=2（個人）の顧客でQuantityが10以上のデータのProductIDを差し引いた残りのProductIDをその順に表示しなさい（第5問および、第3章その7第5問、その8第5問、その9第5問の結果と比較しなさい）。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  s.ProductID&#10;FROM&#10;  Sales AS s&#10;  JOIN&#10;    Customers AS c&#10;    ON c.CustomerID = s.CustomerID&#10;WHERE&#10;  c.CustomerClassID = 1&#10;  AND s.Quantity &gt;= 100&#10;EXCEPT&#10;SELECT&#10;  s.ProductID&#10;FROM&#10;  Sales AS s&#10;  JOIN&#10;    Customers AS c&#10;    ON c.CustomerID = s.CustomerID&#10;WHERE&#10;  c.CustomerClassID = 2&#10;  AND s.Quantity &gt;= 10&#10;ORDER BY&#10;  ProductID ASC&#10;;&#10;```"/>
+          </outline>
+        </outline>
+        <outline text="第5問">
+          <outline text="第4問とは逆に、テーブルSalesの中の、CustomerClassID=2（個人）の顧客でQuantityが10以上のデータのProductIDから、CustomerClassID=1（法人）の顧客でQuantityが100以上のデータのProductIDを差し引いた残りのProductIDをその順に表示しなさい（第4問および、第3章その7第5問、その8第5問、その9第5問の結果と比較しなさい）。" collapsed="true">
+            <outline text="※" _note="```&#10;SELECT&#10;  s.ProductID&#10;FROM&#10;  Sales AS s&#10;  JOIN&#10;    Customers AS c&#10;    ON c.CustomerID = s.CustomerID&#10;WHERE&#10;  c.CustomerClassID = 2&#10;  AND s.Quantity &gt;= 10&#10;EXCEPT&#10;SELECT&#10;  s.ProductID&#10;FROM&#10;  Sales AS s&#10;  JOIN&#10;    Customers AS c&#10;    ON c.CustomerID = s.CustomerID&#10;WHERE&#10;  c.CustomerClassID = 1&#10;  AND s.Quantity &gt;= 100&#10;ORDER BY&#10;  ProductID ASC&#10;;&#10;```"/>
+          </outline>
+        </outline>
+      </outline>
+    </outline>
+    <outline text="第4章"/>
+    <outline text="第5章 応用問題（A24～）">
+      <outline text="【その1】SQLをSELECT文で作成する（A24）" collapsed="true">
+        <outline text="今あるテーブルのレコードを元に別のデータベースに移行するためのデータを作りたいときがあります。こういう場合は、INSERT文を作ってしまうと便利です。では、都道府県テーブル（Prefectural）のデータを元に、1レコードごとのINSERT文をSELECT文を使って生成するにはどうすればよいでしょうか。" _note="結果レコードの例: &#10;```&#10;INSERT INTO Pref_Back VALUES (1, &apos;北海道&apos;);&#10;INSERT INTO Pref_Back VALUES (2, &apos;青森県&apos;);&#10;```" collapsed="true">
+          <outline text="※ " _note="```&#10;SELECT&#10;  &apos;INSERT INTO Pref_Back VALUES (&apos; &#10;  || pf.PrefecturalID &#10;  || &apos;,&apos;&apos;&apos; &#10;  || pf.PrefecturalName || &apos;&apos;&apos;);&apos; AS 都道府県のINSERT文&#10;FROM&#10;  Prefecturals AS pf&#10;;&#10;```"/>
+        </outline>
+      </outline>
+      <outline text="【その2】月別販売額一覧の作成（A24）" collapsed="true">
+        <outline text="月別の販売額をそれぞれ合計して、一覧にしなさい。" _note="出力項目：年月、販売合計金額&#10;出力順：年月&#10;&#10;結果レコードの例: &#10;```&#10;+---------------+---------------+&#10;|年月		|販売合計金額    |&#10;+---------------+---------------+&#10;|2006-09	|213760		|&#10;+---------------+---------------+&#10;```" collapsed="true">
+          <outline text="※" _note="```&#10;SELECT&#10;  subquery_s.年月, &#10;  SUM(subquery_s.販売金額) AS 販売合計金額&#10;FROM&#10;  (&#10;    SELECT&#10;      SUBSTR(CAST(s.SaleDate AS VARCHAR), 1, 7) AS 年月, &#10;      p.Price * s.Quantity AS 販売金額, &#10;      s.ProductID&#10;    FROM&#10;      Sales AS s&#10;      JOIN&#10;        Products AS p&#10;        ON&#10;          p.ProductID = s.ProductID&#10;  ) AS subquery_s&#10;GROUP BY&#10;  subquery_s.年月&#10;ORDER BY&#10;  subquery_s.年月 ASC&#10;;&#10;```"/>
+        </outline>
+      </outline>
+      <outline text="【その3】社員別・月別販売額一覧の作成（A24）" collapsed="true">
+        <outline text="すべての社員について、月別の販売額の合計を一覧にして出しなさい。" _note="出力項目：EmployeeID、EmployeeName、年月、販売合計金額；&#10;出力順：EmployeeID、EmployeeName、年月">
+          <outline text="※" _note="```&#10;SELECT&#10;  e.EmployeeID, &#10;  e.EmployeeName, &#10;  年月, &#10;  SUM(&#10;    CASE &#10;      WHEN subquery_s.販売金額 IS NULL THEN 0&#10;      ELSE subquery_s.販売金額&#10;    END&#10;  ) AS 販売合計金額&#10;FROM&#10;  Employees AS e&#10;    LEFT JOIN&#10;      (&#10;        SELECT&#10;          s.EmployeeID, &#10;          SUBSTR(CAST(s.SaleDate AS VARCHAR), 1, 7) AS 年月, &#10;          s.Quantity * p.Price AS 販売金額&#10;        FROM&#10;          Sales AS s&#10;          JOIN&#10;            Products AS p&#10;            ON&#10;              p.ProductID = s.ProductID&#10;      ) AS subquery_s&#10;    ON&#10;      subquery_s.EmployeeID = e.EmployeeID&#10;GROUP BY&#10;  e.EmployeeID, &#10;  e.EmployeeName, &#10;  年月&#10;ORDER BY&#10;  e.EmployeeID ASC, &#10;  e.EmployeeName ASC, &#10;  年月 ASC&#10;;&#10;```"/>
+          <outline text="※" _note="```&#10;SELECT&#10;  e.EmployeeID, &#10;  e.EmployeeName, &#10;  subquery_s.年月, &#10;  SUM(COALESCE(subquery_s.販売金額, 0)) AS 販売合計金額&#10;FROM&#10;  Employees AS e&#10;  LEFT JOIN&#10;    (&#10;      SELECT&#10;        s.EmployeeID, &#10;        SUBSTR(CAST(s.SaleDate AS VARCHAR), 1, 7) AS 年月, &#10;        p.Price * s.Quantity AS 販売金額&#10;      FROM&#10;        Sales AS s&#10;        JOIN&#10;          Products AS p&#10;          ON&#10;            p.ProductID = s.ProductID&#10;    ) AS subquery_s&#10;    ON&#10;      subquery_s.EmployeeID = e.EmployeeID&#10;GROUP BY&#10;  e.EmployeeID, &#10;  e.EmployeeName, &#10;  subquery_s.年月&#10;ORDER BY&#10;  e.EmployeeID ASC, &#10;  e.EmployeeName ASC, &#10;  subquery_s.年月 ASC&#10;;&#10;```"/>
+        </outline>
+      </outline>
+      <outline text="【その4】商品別・月別販売額一覧の作成（A24～）" collapsed="true">
+        <outline text="商品別に、月ごとの販売額の合計を一覧にして出しなさい。ただし、商品のカテゴリIDが1または3または9のものだけで構いません。合計が5000円以下のものも表示する必要はありません。なお、最近のものから月別に並べてください。" _note="出力項目：ProductID、ProductName、年月、販売合計金額；&#10;出力順：ProductID、ProductName、年月（降順）" collapsed="true">
+          <outline text="※" _note="```&#10;SELECT&#10;  p.ProductID, &#10;  p.ProductName, &#10;  subquery_s.年月, &#10;  SUM(subquery_s.Quantity * p.Price) AS 販売合計金額&#10;FROM&#10;  (&#10;    SELECT&#10;      s.ProductID, &#10;      SUBSTR(CAST(s.SaleDate AS VARCHAR), 1, 7) AS 年月, &#10;      s.Quantity&#10;    FROM&#10;      Sales AS s&#10;  ) AS subquery_s&#10;  JOIN&#10;    Products AS p&#10;    ON&#10;      p.ProductID = subquery_s.ProductID&#10;WHERE&#10;  p.CategoryID IN (1, 3, 9)&#10;GROUP BY &#10;  p.ProductID, &#10;  p.ProductName, &#10;  subquery_s.年月&#10;HAVING&#10;  SUM(subquery_s.Quantity * p.Price) &gt; 5000&#10;ORDER BY&#10;  p.ProductID ASC, &#10;  p.ProductName ASC, &#10;  subquery_s.年月 DESC&#10;;&#10;```"/>
+        </outline>
+      </outline>
+      <outline text="【その5】顧客別・商品別販売額一覧の作成（A25）" collapsed="true">
+        <outline text="顧客別・商品別に販売額の合計を一覧にして出しなさい。" _note="出力項目：CustomerID、CustomerName、ProductName、販売合計金額；&#10;出力順：CustomerID、CustomerName、ProductName" collapsed="true">
+          <outline text="※" _note="```&#10;SELECT&#10;  c.CustomerID, &#10;  c.CustomerName, &#10;  p.ProductName, &#10;  SUM(s.Quantity * p.Price) AS 販売合計金額&#10;FROM&#10;  Sales AS s&#10;  JOIN&#10;    Products AS p&#10;    ON&#10;      p.ProductID = s.ProductID&#10;  JOIN&#10;    Customers AS c&#10;    ON&#10;      c.CustomerID = s.CustomerID&#10;GROUP BY&#10;  c.CustomerID, &#10;  c.CustomerName, &#10;  p.ProductName&#10;ORDER BY&#10;  c.CustomerID ASC, &#10;  c.CustomerName ASC, &#10;  p.ProductName ASC&#10;;&#10;```"/>
+          <outline text="※" _note="```&#10;SELECT&#10;  subquery_sp.CustomerID, &#10;  c.CustomerName, &#10;  subquery_sp.ProductName, &#10;  SUM(subquery_sp.販売金額) AS 販売合計金額&#10;FROM&#10;  (&#10;    SELECT&#10;      s.ProductID, &#10;      p.ProductName, &#10;      s.CustomerID, &#10;      s.Quantity * p.Price AS 販売金額&#10;    FROM&#10;      Sales AS s&#10;      JOIN&#10;        Products AS p&#10;        ON&#10;          p.ProductID = s.ProductID&#10;  ) AS subquery_sp&#10;  JOIN&#10;    Customers AS c&#10;    ON&#10;      c.CustomerID = subquery_sp.CustomerID&#10;GROUP BY&#10;  subquery_sp.CustomerID, &#10;  c.CustomerName, &#10;  subquery_sp.ProductName&#10;ORDER BY&#10;  c.CustomerID ASC, &#10;  c.CustomerName ASC, &#10;  subquery_sp.ProductName ASC&#10;;&#10;```"/>
+        </outline>
+      </outline>
+      <outline text="【その6】都道府県別・商品別販売額一覧の作成（A25）" collapsed="true">
+        <outline text="都道府県別・商品別に、販売額の合計を一覧にして出しなさい。" _note="出力項目：PrefecturalID、PrefecturalName、ProductName、販売合計金額；&#10;出力順：PrefecturalID、PrefecturalName、ProductName" collapsed="true">
+          <outline text="※" _note="```&#10;SELECT&#10;  pf.PrefecturalID, &#10;  pf.PrefecturalName, &#10;  p.ProductName, &#10;  SUM(&#10;    p.Price * s.Quantity&#10;  ) AS 販売合計金額&#10;FROM&#10;  Sales AS s&#10;  JOIN&#10;    Customers AS c&#10;    ON&#10;      c.CustomerID = s.CustomerID&#10;  JOIN&#10;    Prefecturals AS pf&#10;    ON&#10;      pf.PrefecturalID = c.PrefecturalID&#10;  JOIN&#10;    Products AS p&#10;    ON&#10;      p.ProductID = s.ProductID&#10;GROUP BY&#10;  pf.PrefecturalID, &#10;  pf.PrefecturalName, &#10;  p.ProductName&#10;ORDER BY&#10;  pf.PrefecturalID, &#10;  pf.PrefecturalName, &#10;  p.ProductName&#10;;&#10;```"/>
+        </outline>
+      </outline>
+      <outline text="【その7】部門別・月別平均給与一覧の作成（A25～）" collapsed="true">
+        <outline text="部門別・月別の給与の平均を一覧にして出しなさい。なお、2007年に支払われたものだけで構いません。ただし部門は、給与支払日（PayDate）にその社員が所属していた部門としてください。" _note="出力項目：DepartmentID、DepartmentName、年月、平均給与；&#10;出力順：DepartmentID、DepartmentName、年月">
+          <outline text="※（模範解答）" _note="```&#10;SELECT&#10;  d.DepartmentID, &#10;  d.DepartmentName, &#10;  subquery_s.年月, &#10;  AVG(subquery_s.Amount) AS 平均給与&#10;FROM&#10;  (&#10;    SELECT&#10;      s.EmployeeID, &#10;      s.PayDate, &#10;      SUBSTR(CAST(s.PayDate AS VARCHAR), 1, 7) AS 年月, &#10;      s.Amount&#10;    FROM&#10;      Salary AS s&#10;    WHERE&#10;      SUBSTR(CAST(s.PayDate AS VARCHAR), 1, 7) = &apos;2007&apos;&#10;  ) AS subquery_s&#10;  JOIN&#10;    BelongTo AS bt&#10;    ON&#10;      bt.EmployeeID = subquery_s.EmployeeID&#10;      AND subquery_s.PayDate &gt;= bt.StartDate&#10;      AND s.PayDate &lt; &#10;        CASE&#10;          WHEN bt.EndDate IS NULL THEN &apos;9999-12-31&apos;&#10;          ELSE bt.EndDate&#10;        END&#10;  JOIN&#10;    Departments AS d&#10;    ON&#10;      d.DepartmentID = bt.DepartmentID&#10;GROUP BY&#10;  d.DepartmentID, &#10;  d.DepartmentName, &#10;  subquery_s.年月&#10;ORDER BY&#10;  d.DepartmentID ASC, &#10;  d.DepartmentName ASC, &#10;  subquery_s.年月&#10;;&#10;```"/>
+          <outline text="※" _note="```&#10;SELECT&#10;  d.DepartmentID, &#10;  d.DepartmentName, &#10;  subquery_s.年月, &#10;  AVG(subquery_s.Amount) AS 平均給与&#10;FROM&#10;  (&#10;    SELECT&#10;      s.EmployeeID, &#10;      s.PayDate, &#10;      s.Amount, &#10;      SUBSTR(CAST(s.PayDate AS VARCHAR), 1, 7) AS 年月&#10;    FROM&#10;      Salary AS s&#10;    WHERE&#10;      s.PayDate BETWEEN &apos;2007-01-01&apos; AND &apos;2007-12-31&apos;&#10;  ) AS subquery_s&#10;  JOIN&#10;    BelongTo AS bt&#10;    ON&#10;      bt.EmployeeID = subquery_s.EmployeeID&#10;  JOIN&#10;    Departments AS d&#10;    ON&#10;      d.DepartmentID = bt.DepartmentID&#10;WHERE&#10;  bt.StartDate &lt; subquery_s.PayDate&#10;  AND (&#10;    bt.EndDate &gt; subquery_s.PayDate&#10;    OR bt.EndDate IS NULL&#10;  )&#10;GROUP BY&#10;  d.DepartmentID, &#10;  d.DepartmentName, &#10;  subquery_s.年月&#10;ORDER BY&#10;  d.DepartmentID ASC, &#10;  d.DepartmentName ASC, &#10;  subquery_s.年月 ASC&#10;;&#10;```"/>
+        </outline>
+      </outline>
+      <outline text="【その8】月別・カテゴリ別販売額一覧の作成（A26）" collapsed="true">
+        <outline text="月別・カテゴリ別の合計販売額を一覧にして出しなさい。なお、各月ごとに1行にまとめて、カテゴリは1から10までIDごとに集計して横に並べて表示しなさい。" _note="出力項目：年月、Ct1、Ct2、Ct3、Ct4、Ct5、Ct6、Ct7、Ct8、Ct9、Ct10；&#10;出力順：年月">
+          <outline text="※" _note="```&#10;SELECT&#10;  subquery_s.年月, &#10;  SUM(&#10;    CASE&#10;      WHEN p.CategoryID = 1 THEN p.Price * subquery_s.Quantity&#10;      ELSE 0&#10;    END&#10;  ) AS CT1,  &#10;  SUM(&#10;    CASE&#10;      WHEN p.CategoryID = 2 THEN p.Price * subquery_s.Quantity&#10;      ELSE 0&#10;    END&#10;  ) AS CT2, &#10;  SUM(&#10;    CASE&#10;      WHEN p.CategoryID = 3 THEN p.Price * subquery_s.Quantity&#10;      ELSE 0&#10;    END&#10;  ) AS CT3, &#10;  SUM(&#10;    CASE&#10;      WHEN p.CategoryID = 4 THEN p.Price * subquery_s.Quantity&#10;      ELSE 0&#10;    END&#10;  ) AS CT4, &#10;  SUM(&#10;    CASE&#10;      WHEN p.CategoryID = 5 THEN p.Price * subquery_s.Quantity&#10;      ELSE 0&#10;    END&#10;  ) AS CT5, &#10;  SUM(&#10;    CASE&#10;      WHEN p.CategoryID = 6 THEN p.Price * subquery_s.Quantity&#10;      ELSE 0&#10;    END&#10;  ) AS CT6, &#10;  SUM(&#10;    CASE&#10;      WHEN p.CategoryID = 7 THEN p.Price * subquery_s.Quantity&#10;      ELSE 0&#10;    END&#10;  ) AS CT7, &#10;  SUM(&#10;    CASE&#10;      WHEN p.CategoryID = 8 THEN p.Price * subquery_s.Quantity&#10;      ELSE 0&#10;    END&#10;  ) AS CT8, &#10;  SUM(&#10;    CASE&#10;      WHEN p.CategoryID = 9 THEN p.Price * subquery_s.Quantity&#10;      ELSE 0&#10;    END&#10;  ) AS CT9, &#10;  SUM(&#10;    CASE&#10;      WHEN p.CategoryID = 10 THEN p.Price * subquery_s.Quantity&#10;      ELSE 0&#10;    END&#10;  ) AS CT10&#10;FROM&#10;  (&#10;    SELECT&#10;      s.Quantity, &#10;      s.ProductID, &#10;      SUBSTR(CAST(s.SaleDate AS VARCHAR), 1, 7) AS 年月&#10;    FROM&#10;      Sales AS s&#10;  ) AS subquery_s&#10;  JOIN&#10;    Products AS p&#10;    ON&#10;      p.ProductID = subquery_s.ProductID&#10;GROUP BY&#10;  subquery_s.年月&#10;ORDER BY&#10;  subquery_s.年月 ASC&#10;;&#10;```"/>
+          <outline text="メモ">
+            <outline text="※" _note="```&#10;SELECT&#10;  ss.年月&#10;  , SUM(&#10;    CASE&#10;      WHEN ss.CategoryID = 1 THEN p.Price * ss.Quantity&#10;      ELSE 0&#10;    END&#10;  ) AS Ct1&#10;  , 1 AS Ct2&#10;  , 1 AS Ct3&#10;  , 1 AS Ct4&#10;  , 1 AS Ct5&#10;  , 1 AS Ct6&#10;  , 1 AS Ct7&#10;  , 1 AS Ct8&#10;  , 1 AS Ct9&#10;  , 1 AS Ct10&#10;FROM&#10;  (&#10;    SELECT&#10;      s.CategoryID&#10;      , SUBSTR(CAST(s.SaleDate AS VARCHAR), 1, 7) AS 年月&#10;      , s.ProductID&#10;      , s.Quantity&#10;    FROM&#10;      Sales AS s&#10;  ) AS ss&#10;  JOIN&#10;    Products AS p&#10;    ON p.ProductID = ss.ProductID&#10;GROUP BY&#10;  sp.年月&#10;ORDER BY&#10;  sp.年月 ASC&#10;;&#10;```"/>
+          </outline>
+        </outline>
+      </outline>
+      <outline text="【その9】商品別3ヶ月販売推移表の作成（A27～）" collapsed="true">
+        <outline text="商品別に、2007年6月から8月までのそれぞれの月の販売額の推移を出しなさい。なお、7月と8月は前月に対して、増加・変化なし・減少のそれぞれについて、↑・→・↓でそれぞれ表現しなさい。" _note="出力項目：ProductID、ProductName、6月販売金額、7月販売金額、対6月増減、8月販売金額、対7月増減；&#10;出力順：ProductID">
+          <outline text="※" _note="```&#10;SELECT&#10;  subquery_ps.ProductID, &#10;  subquery_ps.ProductName, &#10;  subquery_ps.&quot;6月販売金額&quot;, &#10;  subquery_ps.&quot;7月販売金額&quot;, &#10;  CASE&#10;    WHEN subquery_ps.&quot;6月販売金額&quot; = subquery_ps.&quot;7月販売金額&quot; THEN &apos;→&apos;&#10;    WHEN subquery_ps.&quot;6月販売金額&quot; &gt; subquery_ps.&quot;7月販売金額&quot; THEN &apos;↓&apos;&#10;    WHEN subquery_ps.&quot;6月販売金額&quot; &lt; subquery_ps.&quot;7月販売金額&quot; THEN &apos;↑&apos;&#10;  END AS 対6月増減, &#10;  subquery_ps.&quot;8月販売金額&quot;, &#10;  CASE&#10;    WHEN subquery_ps.&quot;7月販売金額&quot; = subquery_ps.&quot;8月販売金額&quot; THEN &apos;→&apos;&#10;    WHEN subquery_ps.&quot;7月販売金額&quot; &gt; subquery_ps.&quot;8月販売金額&quot; THEN &apos;↓&apos;&#10;    WHEN subquery_ps.&quot;7月販売金額&quot; &lt; subquery_ps.&quot;8月販売金額&quot; THEN &apos;↑&apos;&#10;  END AS 対7月増減&#10;FROM&#10;  (&#10;    SELECT&#10;      p.ProductID, &#10;      p.ProductName, &#10;      SUM(&#10;        CASE&#10;          WHEN s.SaleDate IS NULL THEN 0&#10;          WHEN s.SaleDate BETWEEN &apos;2007-06-01&apos; AND &apos;2007-06-30&apos; THEN s.Quantity * p.Price&#10;          ELSE 0&#10;        END&#10;      ) AS &quot;6月販売金額&quot;, &#10;      SUM(&#10;        CASE&#10;          WHEN s.SaleDate IS NULL THEN 0&#10;          WHEN s.SaleDate BETWEEN &apos;2007-07-01&apos; AND &apos;2007-07-31&apos; THEN s.Quantity * p.Price&#10;          ELSE 0&#10;        END&#10;      ) AS &quot;7月販売金額&quot;, &#10;      SUM(&#10;        CASE&#10;          WHEN s.SaleDate IS NULL THEN 0&#10;          WHEN s.SaleDate BETWEEN &apos;2007-08-01&apos; AND &apos;2007-08-31&apos; THEN s.Quantity * p.Price&#10;          ELSE 0&#10;        END&#10;      ) AS &quot;8月販売金額&quot;&#10;    FROM&#10;      Products AS p&#10;      LEFT JOIN&#10;        Sales AS s&#10;        ON&#10;          p.ProductID = s.ProductID&#10;    GROUP BY&#10;      p.ProductID, &#10;      p.ProductName &#10;  ) subquery_ps&#10;ORDER BY&#10;  subquery_ps.ProductID&#10;;&#10;```"/>
+        </outline>
+      </outline>
+    </outline>
+    <outline text="番外編（ウィンドウ関数）">
+      <outline text="その1">
+        <outline text="Salary テーブルを使って、各社員ごとに、支給額が高い順に給与を並べて、その順位（ランク）を表示せよ。" _note="出力項目：EmployeeID、PayDate、Amount、給与額順位；&#10;出力順：EmployeeID、給与額順位">
+          <outline text="※" _note="```&#10;SELECT &#10;  EmployeeID,&#10;  PayDate,&#10;  Amount,&#10;  RANK() OVER (&#10;    PARTITION BY&#10;      EmployeeID &#10;    ORDER BY &#10;      Amount DESC&#10;  ) AS 給与額順位&#10;FROM &#10;  Salary&#10;ORDER BY &#10;  EmployeeID ASC, &#10;  給与額順位 ASC&#10;;&#10;```"/>
+        </outline>
+      </outline>
+      <outline text="その2">
+        <outline text="Salary テーブルを使って、各社員ごとに支給された給与を支給額の高い順に並べて、上から順に累計額（合計）を計算せよ。" _note="出力項目：EmployeeID、PayDate、Amount、累計支給額&#10;出力順：EmployeeID、累計支給額の計算順（降順）">
+          <outline text="※" _note="```&#10;SELECT &#10;  EmployeeID,&#10;  PayDate,&#10;  Amount,&#10;  RANK() OVER (&#10;    PARTITION BY&#10;      EmployeeID &#10;    ORDER BY &#10;      Amount DESC&#10;  ) AS 給与額順位&#10;FROM &#10;  Salary&#10;ORDER BY &#10;  EmployeeID ASC, &#10;  給与額順位 ASC&#10;;&#10;```"/>
+        </outline>
+      </outline>
+    </outline>
+  </body>
+</opml>

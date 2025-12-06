@@ -1,0 +1,27 @@
+{% extends 'components/query_editor_base.html' %}
+{% block action_url %}{{ url_for('judge_result') }}{% endblock %}
+{% block query_editor_actions %}
+    <input type="hidden" name="chapter_number" value="{{ row.ChapterNumber }}">
+    <input type="hidden" name="section_number" value="{{ row.SectionNumber }}">
+    <input type="hidden" name="question_number" value="{{ row.QuestionNumber }}">
+    <div class="form-actions form-actions-row">
+        <button 
+            type="submit" 
+            name="execute"
+            class="btn btn--execute"
+            title="クエリを実行して結果を判定します。"
+        >クエリ実行</button>
+        <button 
+            id="clear-query-btn"
+            type="button"
+            class="btn btn--clear" 
+            title="入力内容をクリアします。"
+        >クリア</button>
+    </div>
+    <div class="form-actions form-actions-row">
+        <a 
+            href="{{ url_for('practices') }}"
+            class="btn btn--back"
+        >🔙問題一覧に戻る</a>
+    </div>
+{% endblock %}

@@ -1,0 +1,92 @@
+@charset "utf-8";
+
+@import "base/variables.css";
+
+@import "layout/page.css";
+@import "layout/section.css";
+
+@import "components/codemirror.css";
+@import "components/practice.css";
+@import "components/pill.css";
+@import "components/messages.css";
+@import "components/buttons.css";
+@import "components/tables.css";
+@import "components/forms.css";
+@import "components/codeblock.css";
+
+@import "ui/action-icon.css";
+@import "ui/toast.css";
+@import "ui/toggle-header.css";
+@import "ui/loading-logo.css";
+
+/* ===== タイトル・テキスト ===== */
+.heading {
+    margin: 0 0 0.5rem 0;
+    font-weight: 700;
+}
+
+.heading--xl { font-size: 2rem; color: var(--color-pink); }
+.heading--lg { font-size: 1.5rem; color: #6fafff; }
+.heading--md { font-size: 1.2rem; color: #6cda8d; }
+
+.text { margin: 0; }
+.text--lead { font-size: 1.1rem; font-weight: bold; color: #555; }
+.text--small {font-size: 0.8em; font-weight: 400; color: var(--text-muted);}
+
+/* テキストの折り返し有効 */
+.text--pre-wrap {
+    white-space: pre-wrap;
+}
+
+/* 判定メッセージ */
+.text--success {
+    color: var(--text-success);
+    font-weight: bold;
+}
+
+.text--danger {
+    color: var(--text-danger);
+    font-weight: bold;
+}
+
+/* 小さい画面向け微調整 */
+@media (max-width: 600px) {
+  .messages li {
+    font-size: 0.92rem;
+    padding: 0.5rem 0.75rem;
+  }
+  .messages li::before { font-size: 0.95rem; }
+}
+
+/* ===== レスポンシブ調整 ===== */
+@media (max-width: 600px) {
+    .heading--xl { font-size: 1.5rem; }
+    .heading--lg { font-size: 1.2rem; }
+    .form textarea { min-height: 100px; }
+    .chapter {
+        padding: 0.8rem 1rem;
+        font-size: 0.95rem;
+    }
+}
+
+/* ----------------------------------------------------------
+    `/table/<table_name>`ページだけで使われているスタイル
+        -> ページを廃止するときに一緒にポアする
+---------------------------------------------------------- */
+    .page-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+    }
+
+    .related-tables {
+        margin-top: 2rem;
+        padding-top: 1rem;
+        border-top: 2px dashed var(--border-default);
+    }
+
+    .related-tables .heading--lg {
+        color: #6fafff;
+        margin-bottom: 0.5rem;
+    }

@@ -1,0 +1,345 @@
+from flask import (
+    Flask, render_template, abort, request, flash, redirect, 
+    url_for)
+from flask_wtf.csrf import CSRFProtect, generate_csrf
+from dotenv import load_dotenv
+# import pyodbc
+
+from sql_dojo.config import ( 
+    DEFAULT_COLUMNS, DEFAULT_ROWS, 
+)
+
+import sql_dojo.db.queries as dbq
+import sql_dojo.db.import_from_excel as db_excel
+import os
+from pathlib import Path
+import sys
+from sql_dojo.services.file_service import save_query_to_file
+from sql_dojo.services.query_service import exec_query
+from sql_dojo.services.session_service import (
+    # エディタのクエリ保存関係
+    save_editor_query, pop_editor_query, clear_editor_query, 
+    # エディタの高さ関連
+    save_query_editor_height, load_query_editor_height, clear_query_editor_height, 
+    # エディタへのスクロールフラグ
+    set_scroll_to_editor, pop_scroll_to_editor, 
+)
+
+from sql_dojo.config import (
+    BASE_DIR, DATA_DIR, STORAGE_DIR, STATIC_DIR, TEMPLATE_DIR, 
+)
+
+# `.env`の場所
+ENV_PATH = BASE_DIR / ".env"
+
+# `.env`読み込み
+load_dotenv(ENV_PATH)
+
+app = Flask(
+    __name__, 
+    static_folder=str(STATIC_DIR), 
+    template_folder=str(TEMPLATE_DIR))
+# CSRF対策
+app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
+csrf = CSRFProtect(app)
+# セッション用の秘密鍵設定
+app.secret_key = os.getenv("SESSION_SECRET_KEY")
+
+# クエリ保存用フォルダを用意
+QUERY_SAVE_DIR = STORAGE_DIR / "queries"
+QUERY_SAVE_DIR.mkdir(parents=True, exist_ok=True)
+
+# DB接続に踏み台Excelを使うかどうか（`.env`から取得）
+using_excel = (os.getenv("USING_EXCEL").upper() == "TRUE")
+
+def _exec_sql_query(sql_query: str, page: str, use_excel: bool=False) -> tuple[list, list]:
+    # クエリ実行 -> レコードセット取得
+    columns, rows, message, category = exec_query(sql_query=sql_query, use_excel=use_excel)
+    # フラッシュメッセージ
+    flash(message, category)
+    # セッションにスクロールフラグを立てる
+    set_scroll_to_editor(page, True)
+    # レコードセットを返す
+    return columns, rows
+
+def _prepare_exec_query(form, page: str) -> tuple[str, str | None]:
+    # クエリ実行の前処理
+    sql_query = form.get("sql_query", "").strip()
+     # CodeMirrorラッパーの高さを保存
+    sql_query_height = request.form.get("sql_query_height")
+    if sql_query_height:
+        # エディタの高さをセッションに保存
+        save_query_editor_height(
+            sql_query_height=sql_query_height, 
+            page=page, 
+        )
+    return sql_query, sql_query_height
+
+# トップページ
+@app.route("/", methods=["GET", "POST"])
+def index():
+    # ローカル変数初期化
+    sql_query: str = ''
+    columns: list = []
+    rows: list = []
+    scroll_to_editor: bool = False
+    # POSTリクエストのとき
+    if request.method == "POST":
+        # クエリ実行準備
+        sql_query, sql_query_height = _prepare_exec_query(form=request.form, page="index")
+        
+        # 「保存」ボタンが押された
+        if "save" in request.form:
+            # ユーザが入力したファイル名を取得
+            user_filename = request.form.get("filename", "").strip()
+            # クエリ保存関数呼び出し
+            filename, message, category = save_query_to_file(
+                sql_query=sql_query, 
+                user_filename=user_filename, 
+                storage_dir=QUERY_SAVE_DIR)
+
+            flash(f"{message}{filename}", category)
+
+            # エディタのクエリをセッションに保存
+            save_editor_query(sql_query=sql_query, page="index")
+            # セッションにスクロールフラグを立てる
+            set_scroll_to_editor(True)
+            # トップページにリダイレクト
+            return redirect(url_for("index"))
+        elif "execute" in request.form:
+            # クエリ実行 -> レコードセット取得
+            columns, rows = _exec_sql_query(sql_query=sql_query, page="index", use_excel=using_excel)
+
+    # GETリクエストのとき
+    else:
+        # セッションに保存した直近のクエリをテンプレートに渡す
+        sql_query = pop_editor_query("index")
+        # デフォルトの擬似テーブルを表示
+        columns, rows = [DEFAULT_COLUMNS, DEFAULT_ROWS]
+
+    # エディタの高さ情報をセッションから取り出し
+    sql_query_height = load_query_editor_height("index")
+    # エディタへのスクロールフラグをセッションから取り出し
+    scroll_to_editor = pop_scroll_to_editor("index")
+
+    # レコードセットをテンプレートに渡す
+    return render_template(
+        "pages/top/index.html", 
+        columns=columns, 
+        rows=rows, 
+        table_names=dbq.TABLE_NAMES, 
+        sql_query=sql_query, 
+        sql_query_height=sql_query_height, 
+        scroll_to_editor=scroll_to_editor
+    )
+
+# 各テーブルの構造データ（JSON）を返すWeb API
+@app.route("/api/table/<table_name>")
+def api_table_structure(table_name):
+    allowed_tables = dbq.TABLE_NAMES
+    if table_name not in allowed_tables:
+        # JSONとステータスコード（`400`: Bad Request）を返す
+        return {"error": "Invalid table name"}, 400
+    # `fields`: カラム名のリスト
+    # `values`: `Row`オブジェクトのリスト
+    if using_excel:
+        fields, values = db_excel.describe_table(table_name)
+    else:
+        fields, values = dbq.describe_table(table_name)
+    # Rowオブジェクトをリストに変換してリストのリストにする
+    rows_list = [list(row) for row in values]
+    # クライアントにJSONを返す
+    return {
+        "columns": fields, 
+        "rows": rows_list, 
+    }
+
+from sql_dojo.db.practices import (
+    generate_structured_practice_list
+)
+# 練習問題の一覧を表示するページ
+@app.route('/practices', methods=['GET'])
+def practices():
+    # 問題データ取得
+    chapters = generate_structured_practice_list()
+
+    # セッションに記録したエディタの高さ・入力クエリをクリアする
+    clear_editor_query(page="practice")
+    clear_query_editor_height(page="practice")
+
+    return render_template(
+        "pages/practices/index.html", 
+        chapters=chapters
+    )
+
+from sql_dojo.db.practices import fetch_question
+
+# 練習問題のページ
+@app.route('/practices/<int:chapter>/<int:section>/<int:question>', methods=["GET"])
+def practice_detail(chapter, section, question):
+    # 問題データを取得
+    row = fetch_question(
+        chapter_number=chapter, 
+        section_number=section, 
+        question_number=question
+    )
+    
+    # レコードセットがない
+    if row is None:
+        abort(404, "( ´,_ゝ`)ﾌﾟｯ < 指定された問題がないｗｗｗ")
+
+    # セッションにエディタの高さとクエリがあれば復元
+    preserved_query = pop_editor_query(page="practice")
+    sql_query_height = load_query_editor_height(page="practice")
+
+    return render_template(
+        "pages/practices/practice_detail.html", 
+        row=row, 
+        table_names=dbq.TABLE_NAMES, 
+        sql_query=preserved_query, 
+        sql_query_height=sql_query_height
+    )
+
+# 正解データ取得用
+from sql_dojo.db import practice_queries as pq
+# 正解/不正解判定用
+from sql_dojo.services.practice_service import compare_queries
+# 結果表示用データ取得用
+from sql_dojo.services.query_compare.messages import (
+    CompareResult, 
+    COMPARE_RESULT_MESSAGES
+)
+# セッションのデータ消去用
+from sql_dojo.services.session_service import clear_editor_query
+
+@app.route('/practices/judge_result', methods=["POST"])
+def judge_result():
+    """ 答案クエリと正解クエリを受け取って、正誤を判定
+        結果表示ページにリダイレクト
+    """
+    # 章・節・問題番号を取得
+    chapter_number = request.form.get("chapter_number")
+    section_number = request.form.get("section_number")
+    question_number = request.form.get("question_number")
+    # タプルにまとめる
+    question_info = (
+        int(chapter_number), 
+        int(section_number), 
+        int(question_number)
+    )
+    # 次の問題の情報（タプル）を取得
+    next_question_info = pq.get_next_question_key(question_info)
+
+    # 正解クエリとチェックモードを取得
+    answer_data = pq.fetch_one(pq.SELECT_ANSWER_QUERY, params=question_info)
+    answer_query, checkmode = (answer_data["AnswerQuery"], answer_data["CheckMode"])
+
+    # ユーザが投稿したクエリを取得
+    org_user_query = request.form.get("sql_query", "")
+    #   併せてエディタの高さをセッションに保存
+    user_query, editor_height = _prepare_exec_query(form=request.form, page="practice")
+    # エディタのクエリをセッションに保存
+    save_editor_query(sql_query=user_query, page="practice")
+
+    # クエリの実行結果を判定
+    (
+        result, result_enum, message, detail, 
+        user_columns, user_rows, 
+        answer_columns, answer_rows) = compare_queries(
+            user_query=user_query, 
+            answer_query=answer_query, 
+            check_mode=checkmode, 
+            rule=None, 
+            use_excel=using_excel
+        )
+    # 合格だったら、セッションのクエリ情報は不要なのでポア
+    if result:
+        clear_editor_query(page="practice")
+
+    return render_template(
+        "pages/practices/judge_result.html", 
+        result=result, 
+        result_enum=result_enum, 
+        message=message, 
+        detail=detail, 
+        question_info=question_info,
+        next_question_info=next_question_info, 
+        user_columns=user_columns, 
+        user_rows=user_rows, 
+        answer_columns=answer_columns, 
+        answer_rows=answer_rows, 
+        CompareResult=CompareResult, 
+        COMPARE_RESULT_MESSAGES=COMPARE_RESULT_MESSAGES, 
+        user_query=org_user_query.strip()
+    )
+
+# 問題・正解クエリの編集ページ
+@app.route(
+    "/questions/edit/<int:chapter>/<int:section>/<int:question>", 
+    methods=["GET", "POST"])
+def questions_edit(chapter, section, question):
+    chapter_number = chapter
+    section_number = section
+    question_number = question
+    token = generate_csrf()
+
+    if request.method == "POST":
+        # フォームから受け取ったデータの検証
+        question_text = request.form.get("question_text", "").strip()
+        answer_query = request.form.get("answer_edit", "").strip()
+        check_mode = request.form.get("check_mode", "strict")
+        # 問題文・正解クエリが空 -> 不受理・差し戻し＆煽りメッセージ
+        if not question_text or not answer_query:
+            flash("m9(^Д^) < 問題文と正解クエリは必須ですｗｗｗ", "error")
+            return redirect(request.url)
+
+        # フォームから受け取った問題・クエリでDBを更新
+        try: 
+            pq.update_question(
+                chapter_number=chapter, 
+                section_number=section, 
+                question_number=question, 
+                question_text=question_text, 
+                answer_query=answer_query, 
+                check_mode=check_mode
+            )
+            flash("( *´∀`) < 更新しました。", "success")
+        except Exception as e:
+            flash(f"(((( ；ﾟДﾟ))) < 更新失敗……。{e}...", "error")
+            return redirect(request.url)
+
+        # 編集画面へリダイレクト
+        return redirect(request.url)
+    
+    # DBから問題・正解クエリのデータを取得
+    result = pq.get_question_data(chapter_number=chapter_number, section_number=section_number, question_number=question_number)
+
+    chapter_title = result["ChapterTitle"]
+    section_title = result["SectionTitle"]
+    question_text = result["Question"]
+    answer_query = result["AnswerQuery"]
+    check_mode = result["CheckMode"]
+
+    return render_template(
+        'pages/editor/question_editor.html', 
+        token=token, 
+        chapter_number=chapter_number, 
+        chapter_title=chapter_title, 
+        section_number=section_number, 
+        section_title=section_title,  
+        question_number=question_number, 
+        question_text=question_text, 
+        answer_query=answer_query, 
+        check_mode=check_mode
+    )
+
+import webbrowser
+from threading import Timer
+
+def open_browser():
+    webbrowser.open("http://localhost:5000")
+
+if __name__ == "__main__":
+    # app.run(debug=True)
+    Timer(0.8, open_browser).start()
+    app.run(host="127.0.0.1", port=5000)

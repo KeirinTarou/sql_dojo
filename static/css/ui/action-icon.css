@@ -1,0 +1,74 @@
+/* アクション系アイコンのスタイル */
+
+/* クエリコピーアイコン */
+.copy-btn {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: var(--transition-slow);
+    z-index: 10;
+}
+.copy-btn:hover {
+    opacity: 1.0;
+}
+.copy-btn:active {
+    opacity: 0.8;
+}
+
+/* キャッシュクリアアイコン */
+#cache-clear-icon {
+    display: inline-block;
+    line-height: 1;
+    font-size: 1rem;
+    transform-origin: center;
+    margin-left: 0.5em;
+    opacity: 0; 
+    cursor: pointer;
+    user-select: none;
+    transition: var(--transition-fast);
+    vertical-align: middle;
+}
+#cache-clear-icon:hover {
+    opacity: 1;
+    transform: translateY(-1px) scale(1.2);
+}
+#cache-clear-icon:active {
+    transform: translateY(0) scale(1.0);
+    filter: brightness(1.5);
+}
+
+.section--tables h2.heading--lg:hover #cache-clear-icon {
+    opacity: 0.5;
+}
+
+/* .practice-titleの中にある歯車アイコン */
+.practice-title .edit-icon {
+    display: inline-block;
+    margin-left: 0.5em;
+    font-size: 1rem;
+    opacity: 0;
+    cursor: pointer;
+    user-select: none;
+    transform-origin: center;
+    transition: var(--transition-slow);
+    vertical-align: middle;
+}
+/* 行にホバーしたとき */
+.practice-title:hover .edit-icon {
+    opacity: 0.5;
+}
+/* アイコン本体にホバーしたとき */
+.practice-title .edit-icon:hover {
+    opacity: 1;
+    transform: translateY(-2px) scale(1.2);
+}
+/* クリックしたとき */
+.practice-title .edit-icon:active {
+    transform: translateY(0) scale(1.0);
+    filter: brightness(1.4);
+}

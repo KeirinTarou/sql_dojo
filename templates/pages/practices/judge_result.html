@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %}結果判定{% endblock %}
+{% block contents %}
+    <main class="page page--sql">
+        {% include "components/header/judge_result_header.html" %}
+        {% include "components/judge/message.html" %}
+        <!-- 正解時はクエリと実行結果を表示 -->
+        {% if result %}
+            {% set codeblock_title = "👏👏👏お見事なあなたのクエリ👏👏👏" %}
+            {% set user_query = user_query %}
+            {% include "components/judge/codeblock.html" %}
+            {% set table_title = "🎊🎊🎊すばらしいあなたのクエリの結果🎊🎊🎊" %}
+            {% set columns = user_columns %}
+            {% set rows = user_rows %}
+            {% include "components/judge/result_table.html" %}
+        <!-- 不正解時に不一致の詳細を表示する -->
+        {% else %}
+            {% include "components/judge/detail.html" %}
+            {% set codeblock_title = "🤮くそキモいあなたのクエリ" %}
+            {% set header_hint = "( ´,_ゝ`) < きんもーーーｗｗｗ" %}
+            {% set user_query = user_query %}
+            {% include "components/judge/codeblock.html" %}
+            {% set table_title = "🤪あなたがたどり着けなかった正解クエリの結果" %}
+            {% set columns = answer_columns %}
+            {% set rows = answer_rows %}
+            {% include "components/judge/result_table.html" %}
+            {% set table_title = "💩くっそダサいあなたのクエリの結果" %}
+            {% set columns = user_columns %}
+            {% set rows = user_rows %}
+            {% include "components/judge/result_table.html" %}
+        {% endif %}
+    </main>
+{% endblock %}
+{% block loading_logo %}
+    {% if result %}
+        <div id="loading-logo">
+            <img src="{{ url_for('static', filename='img/big-face.png') }}" alt="loading logo">
+        </div>
+    {% else %}
+        <div id="loading-logo">
+            <img src="{{ url_for('static', filename='img/aori-face.png') }}" alt="loading logo">
+        </div>
+    {% endif %}
+{% endblock %}
+{% block javascript %}
+    {% if result %}
+        <script>
+            const duration = 2.5 * 1000;
+            const end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 5,                   // 紙吹雪量
+                    spread: 90,                         // ヨコへの広がり
+                    origin: { x: Math.random(), y: 0 }, 
+                    gravity: 1.5,                       // 重力
+                    ticks: 200,                         // 生存時間
+                    scalar: 2.0,                        // 大きさ
+                    colors: ['#ff0', '#0ff', '#f0f', '#f00', '#0f0'], 
+                });
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            })();
+        </script>
+    {% endif %}
+{% endblock %}

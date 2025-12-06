@@ -1,0 +1,18 @@
+{% extends 'components/query_editor_base.html' %}
+{% block action_url %}{{ url_for('playground') }}{% endblock %}
+{% block query_editor_actions %}
+    <div class="form-actions form-actions-row">
+        <button 
+            type="submit" 
+            name="execute"
+            class="btn btn--execute"
+            title="入力したクエリを実行します。"
+        >クエリ実行</button>
+        <button 
+            id="clear-query-btn"
+            type="button"
+            class="btn btn--clear" 
+            title="入力内容をクリアします。"
+        >クリア</button>
+    </div>
+{% endblock %}

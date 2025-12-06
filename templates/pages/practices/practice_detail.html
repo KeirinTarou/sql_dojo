@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Practice{% endblock %}
+{% block contents %}
+{% include "components/header/practice_detail_header.html" %}
+<main class="page page--sql">
+    {% include "components/table_structure/table_structure.html" %}
+
+    <section class="section">
+        <h2 class="heading heading--lg">第{{ row.ChapterNumber }}章 {{ row.ChapterTitle }}</h2>
+        <h3 class="heading heading--md">【その{{ row.SectionNumber }}】{{ row.SectionTitle }}</h3>
+        <div class="practice-question">
+            {% set edit_url = url_for(
+                "questions_edit", 
+                chapter=row.ChapterNumber, 
+                section=row.SectionNumber, 
+                question=row.QuestionNumber) 
+            %}
+            <p class="text text--lead practice-title">
+                {% if row.QuestionNumber == 0 %}
+                    書いてみよう
+                {% else %}
+                    第{{ row.QuestionNumber }}問
+                {% endif %}
+                <span 
+                    class="edit-icon"
+                    title="この問題を編集する"
+                    aria-label="問題編集"
+                    onclick="location.href='{{ edit_url }}'"
+                >
+                    ⚙️
+                </span>
+            </p><br>
+            <p class="text text--pre-wrap">{{ row.Question }}</p>
+        </div>
+    </section>
+
+    {% include "components/query_editor/query_editor_practice.html" %}
+
+</main>
+{% endblock %}
