@@ -1,7 +1,11 @@
 from pathlib import Path
 import sys
 import os
+from dotenv import load_dotenv
 # アプリの設定値を集めたモジュール
+
+# 環境変数読み込み
+load_dotenv()
 
 # パス解決まわり
 def get_base_dir():
@@ -18,14 +22,6 @@ DATA_DIR = BASE_DIR / "data"
 STORAGE_DIR = BASE_DIR / "storage"
 TEMPLATE_DIR = BASE_DIR / "templates"
 STATIC_DIR = BASE_DIR / "static"
-
-# DB接続まわり
-DB_DRIVER = os.getenv("DB_DRIVER")
-DB_SERVER = os.getenv("DB_SERVER")
-DB_PORT = os.getenv("DB_PORT")
-DB_DATABASE = os.getenv("DB_DATABASE")
-DB_USER = os.getenv("DB_USER")
-DB_PASSWORD = os.getenv("DB_PASSWORD")
 
 # 結果表示テーブルまわり
 
