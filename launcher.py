@@ -47,6 +47,10 @@ root = tk.Tk()
 root.title("🚀お笑いSQL道場 Launcher")
 root.geometry("320x130")
 
+# アイコン設定
+ICON_PATH = resource_path("img/BA-90.ico")
+root.iconbitmap(str(ICON_PATH))
+
 label_status = tk.Label(
     root, 
     text="( ´,_ゝ`) < 起動していないｗｗｗ", 
