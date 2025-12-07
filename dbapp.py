@@ -48,7 +48,7 @@ app.secret_key = os.getenv("SESSION_SECRET_KEY")
 # クエリ保存用フォルダを用意
 QUERY_SAVE_DIR = STORAGE_DIR / "queries"
 QUERY_SAVE_DIR.mkdir(parents=True, exist_ok=True)
-LOG_SAVE_DIR = STORAGE_DIR / "queries"
+LOG_SAVE_DIR = STORAGE_DIR / "logs"
 LOG_SAVE_DIR.mkdir(parents=True, exist_ok=True)
 
 # ログ吐き出し用
