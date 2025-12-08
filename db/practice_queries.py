@@ -174,6 +174,17 @@ GET_MAX_QUESTION_NUM_QUERY = """
     ;
 """
 
+SECTION_EXISTS_QUERY = """
+    SELECT
+        1
+    FROM
+        Sections AS s
+    WHERE
+        s.ChapterNumber = ?
+        AND s.SectionNumber = ?
+    ;
+"""
+
 def fetch_all(sql_query: str, params: Optional[Sequence[Any]]=None) -> Tuple[List[str], List[Dict[str, Any]]]:
     """ 複数のレコードセットを取得する
     """
