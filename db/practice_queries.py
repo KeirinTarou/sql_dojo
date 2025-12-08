@@ -227,6 +227,38 @@ def update_question(chapter_number:int, section_number: int, question_number: in
             raise ValueError("指定の問題が存在しません。")
         conn.commit()
 
+def insert_question(
+    chapter_number: int, 
+    section_number: int, 
+    question_text: str, 
+    answer_query: str, 
+    check_mode: str = "strict"
+):
+    # 節が存在しなかったら例外スロー
+    if not section_exists(chapter_number, section_number):
+        raise ValueError("指定した章・節は存在しません。")
+
+    # 問題番号を取得
+    question_number = gen_next_question_num(chapter_number, section_number)
+
+    with get_connection() as conn:
+        cur = conn.cursor()
+        cur.execute(
+            INSERT_QUESTION_QUERY, 
+            (
+                chapter_number, 
+                section_number, 
+                question_number, 
+                question_text, 
+                answer_query, 
+                check_mode
+            )
+        )
+        conn.commit()
+    
+    # 追加した問題の問題番号を返す
+    return question_number
+
 def section_exists(chapter_number: int, section_number: int) -> bool:
     row = fetch_one(
         SECTION_EXISTS_QUERY, 
@@ -267,10 +299,10 @@ def get_next_question_key(current_key):
     #   -> Noneを返す
     return None
 
-def gen_next_question_num(chapter: int, section: int) -> int:
+def gen_next_question_num(chapter_number: int, section_number: int) -> int:
     row = fetch_one(
         GET_MAX_QUESTION_NUM_QUERY, 
-        (chapter, section)
+        (chapter_number, section_number)
     )
 
     if row is None: return 0
