@@ -160,7 +160,18 @@ INSERT_QUESTION_QUERY = """
         ?, 
         ?, 
         ?
-    )
+    );
+"""
+# 現在の節の最大問題番号を取得するクエリ
+GET_MAX_QUESTION_NUM_QUERY = """
+    SELECT
+        MAX(QuestionNumber)
+    FROM
+        Questions
+    WHERE
+        ChapterNumber = ?
+        AND SectionNumber = ?
+    ;
 """
 
 def fetch_all(sql_query: str, params: Optional[Sequence[Any]]=None) -> Tuple[List[str], List[Dict[str, Any]]]:
