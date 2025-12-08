@@ -227,6 +227,14 @@ def update_question(chapter_number:int, section_number: int, question_number: in
             raise ValueError("指定の問題が存在しません。")
         conn.commit()
 
+def section_exists(chapter_number: int, section_number: int) -> bool:
+    row = fetch_one(
+        SECTION_EXISTS_QUERY, 
+        (chapter_number, section_number)
+    )
+    # 結果が返ったらそのセクションは存在する
+    return row is not None
+
 def get_all_ordered_question_keys():
     """ 全問題の章・節・問題番号のセットを取得
         章 > 節 > 問題の順に並べ替え済み
