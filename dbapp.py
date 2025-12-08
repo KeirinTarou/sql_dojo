@@ -48,6 +48,22 @@ app.secret_key = os.getenv("SESSION_SECRET_KEY")
 # クエリ保存用フォルダを用意
 QUERY_SAVE_DIR = STORAGE_DIR / "queries"
 QUERY_SAVE_DIR.mkdir(parents=True, exist_ok=True)
+LOG_SAVE_DIR = STORAGE_DIR / "logs"
+LOG_SAVE_DIR.mkdir(parents=True, exist_ok=True)
+
+# ログ吐き出し用
+import logging
+from datetime import datetime
+log_filename = datetime.now().strftime("%Y-%m-%d") + ".log"
+LOG_FILE = LOG_SAVE_DIR / log_filename
+logging.basicConfig(
+    level=logging.INFO, 
+    format="%(asctime)s [%(levelname)s] %(message)s", 
+    handlers=[
+        logging.FileHandler(LOG_FILE, encoding="utf-8"), 
+        logging.StreamHandler()
+    ]
+)
 
 # DB接続に踏み台Excelを使うかどうか（`.env`から取得）
 using_excel = (os.getenv("USING_EXCEL").upper() == "TRUE")
@@ -340,6 +356,7 @@ def open_browser():
     webbrowser.open("http://localhost:5000")
 
 if __name__ == "__main__":
+    logging.info("Flask application SQL-dojo started...")
     # app.run(debug=True)
     Timer(0.8, open_browser).start()
     app.run(host="127.0.0.1", port=5000)

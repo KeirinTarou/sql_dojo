@@ -6,3 +6,5 @@ storage/
 jquery*
 practice.db
 .env
+_internal/
+*.exe

@@ -1,8 +1,8 @@
-import mysql.connector
+# import mysql.connector
+import pyodbc
 import os
 
 def get_connection_string():
-    driver = os.getenv("DB_DRIVER")
     return (
         f"DRIVER={ os.getenv("DB_DRIVER") };"
         f"SERVER={ os.getenv('DB_SERVER') };"
@@ -14,10 +14,16 @@ def get_connection_string():
     )
 
 def get_connection():
-    return mysql.connector.connect(
-        host=os.getenv("DB_SERVER"),     
-        port=os.getenv("DB_PORT"), 
-        user=os.getenv("DB_USER"), 
-        password=os.getenv("DB_PASSWORD"), 
-        database=os.getenv("DB_DATABASE"), 
-    )
+    """`pyodbc.Connection`インスタンスを返す
+    """
+    return pyodbc.connect(get_connection_string())
+
+# mysql.connector版
+# def get_connection():
+#     return mysql.connector.connect(
+#         host=os.getenv("DB_SERVER"),     
+#         port=os.getenv("DB_PORT"), 
+#         user=os.getenv("DB_USER"), 
+#         password=os.getenv("DB_PASSWORD"), 
+#         database=os.getenv("DB_DATABASE"), 
+#     )
