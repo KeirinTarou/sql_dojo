@@ -247,3 +247,16 @@ def get_next_question_key(current_key):
     # 現在の問題が最後の問題のときはここに来る
     #   -> Noneを返す
     return None
+
+def gen_next_question_num(chapter: int, section: int) -> int:
+    row = fetch_one(
+        GET_MAX_QUESTION_NUM_QUERY, 
+        (chapter, section)
+    )
+
+    if row is None: return 0
+
+    # Rowオブジェクトの値部分だけを取り出してその先頭を取得
+    #   -> スカラクエリなので、先頭の値を取得すれば良い
+    max_no = next(iter(row.values()))
+    return 0 if max_no is None else max_no + 1
