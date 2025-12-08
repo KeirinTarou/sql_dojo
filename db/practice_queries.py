@@ -144,6 +144,25 @@ UPDATE_QUESTION_QUERY = """
     ;
 """
 
+# 問題データ追加用クエリ
+INSERT_QUESTION_QUERY = """
+    INSERT INTO Questions (
+        ChapterNumber, 
+        SectionNumber, 
+        QuestionNumber, 
+        Question, 
+        AnswerQuery, 
+        CheckMode
+    ) Values (
+        ?, 
+        ?, 
+        ?, 
+        ?, 
+        ?, 
+        ?
+    )
+"""
+
 def fetch_all(sql_query: str, params: Optional[Sequence[Any]]=None) -> Tuple[List[str], List[Dict[str, Any]]]:
     """ 複数のレコードセットを取得する
     """
