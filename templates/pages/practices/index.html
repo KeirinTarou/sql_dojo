@@ -13,8 +13,20 @@
             <div class="toggle-content is-close">
                 {% for section in chapter.sections %}
                     <article class="section">
+                        {# 問題新規追加ページへのリンク用URL #}
+                        {% set create_url = url_for(
+                            "create_question", 
+                            chapter=chapter.chapter_number, 
+                            section=section.section_number
+                        ) %}
                         <h3 class="heading heading--md section-title">
                             【その{{ section.section_number }}】{{ section.section_title }}
+                            <span 
+                                class="edit-icon"
+                                title="この節に問題を追加する"
+                                aria-label="問題追加"
+                                onclick="location.href='{{ create_url }}'"
+                            >✒️</span>
                         </h3>
                         <ul class="practice-list">
                             {% for q in section.questions %}
