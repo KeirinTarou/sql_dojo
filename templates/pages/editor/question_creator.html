@@ -2,11 +2,11 @@
 
 {% set messages = get_flashed_messages(with_categories=true) %}
 
-{% block title %}Editor{% endblock %}
+{% block title %}Creator{% endblock %}
 {% block contents %}
     <main class="page page--edit">
         <!-- イントロダクション部分 -->
-        {% include "components/header/editor_header.html" %}
+        {% include "components/header/creator_header.html" %}
         <section class="section section--editor">
             <h2 class="heading heading--xl">第{{ chapter_number }}章 {{ chapter_title }}</h2>
             <h3 class="heading heading--lg">【その{{ section_number }}】{{ section_title }}</h3>
@@ -18,12 +18,11 @@
                 {% endif %}
             </h4>
             {% set action_url = url_for(
-                'questions_edit', 
+                'create_question', 
                 chapter=chapter_number, 
-                section=section_number, 
-                question=question_number) 
+                section=section_number) 
             %}
-            {% set btn_text = "更新" %}
+            {% set btn_text = "追加" %}
             {% include "pages/editor/_question_form.html" %}
         </section>
         {% if messages %}

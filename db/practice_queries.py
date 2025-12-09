@@ -144,6 +144,47 @@ UPDATE_QUESTION_QUERY = """
     ;
 """
 
+# 問題データ追加用クエリ
+INSERT_QUESTION_QUERY = """
+    INSERT INTO Questions (
+        ChapterNumber, 
+        SectionNumber, 
+        QuestionNumber, 
+        Question, 
+        AnswerQuery, 
+        CheckMode
+    ) Values (
+        ?, 
+        ?, 
+        ?, 
+        ?, 
+        ?, 
+        ?
+    );
+"""
+# 現在の節の最大問題番号を取得するクエリ
+GET_MAX_QUESTION_NUM_QUERY = """
+    SELECT
+        MAX(QuestionNumber)
+    FROM
+        Questions
+    WHERE
+        ChapterNumber = ?
+        AND SectionNumber = ?
+    ;
+"""
+
+SECTION_EXISTS_QUERY = """
+    SELECT
+        1
+    FROM
+        Sections AS s
+    WHERE
+        s.ChapterNumber = ?
+        AND s.SectionNumber = ?
+    ;
+"""
+
 def fetch_all(sql_query: str, params: Optional[Sequence[Any]]=None) -> Tuple[List[str], List[Dict[str, Any]]]:
     """ 複数のレコードセットを取得する
     """
@@ -186,6 +227,46 @@ def update_question(chapter_number:int, section_number: int, question_number: in
             raise ValueError("指定の問題が存在しません。")
         conn.commit()
 
+def insert_question(
+    chapter_number: int, 
+    section_number: int, 
+    question_text: str, 
+    answer_query: str, 
+    check_mode: str = "strict"
+):
+    # 節が存在しなかったら例外スロー
+    if not section_exists(chapter_number, section_number):
+        raise ValueError("指定した章・節は存在しません。")
+
+    # 問題番号を取得
+    question_number = gen_next_question_num(chapter_number, section_number)
+
+    with get_connection() as conn:
+        cur = conn.cursor()
+        cur.execute(
+            INSERT_QUESTION_QUERY, 
+            (
+                chapter_number, 
+                section_number, 
+                question_number, 
+                question_text, 
+                answer_query, 
+                check_mode
+            )
+        )
+        conn.commit()
+    
+    # 追加した問題の問題番号を返す
+    return question_number
+
+def section_exists(chapter_number: int, section_number: int) -> bool:
+    row = fetch_one(
+        SECTION_EXISTS_QUERY, 
+        (chapter_number, section_number)
+    )
+    # 結果が返ったらそのセクションは存在する
+    return row is not None
+
 def get_all_ordered_question_keys():
     """ 全問題の章・節・問題番号のセットを取得
         章 > 節 > 問題の順に並べ替え済み
@@ -217,3 +298,34 @@ def get_next_question_key(current_key):
     # 現在の問題が最後の問題のときはここに来る
     #   -> Noneを返す
     return None
+
+def gen_next_question_num(chapter_number: int, section_number: int) -> int:
+    row = fetch_one(
+        GET_MAX_QUESTION_NUM_QUERY, 
+        (chapter_number, section_number)
+    )
+
+    if row is None: return 0
+
+    # Rowオブジェクトの値部分だけを取り出してその先頭を取得
+    #   -> スカラクエリなので、先頭の値を取得すれば良い
+    max_no = next(iter(row.values()))
+    return 0 if max_no is None else max_no + 1
+
+def get_chapter_title(chapter_number: int) -> Optional[str]:
+    row = fetch_one(
+        "SELECT ChapterTitle FROM Chapters WHERE ChapterNumber = ?", 
+        (chapter_number, )
+    )
+
+    if row is None: return None
+    return row["ChapterTitle"]
+
+def get_section_title(chapter_number: int, section_number: int) -> Optional[str]:
+    row = fetch_one(
+        "SELECT SectionTitle FROM Sections WHERE ChapterNumber = ? AND SectionNumber = ?", 
+        (chapter_number, section_number)
+    )
+
+    if row is None: return None
+    return row["SectionTitle"]

@@ -47,7 +47,9 @@
 }
 
 /* .practice-titleの中にある歯車アイコン */
-.practice-title .edit-icon {
+/* .section-titleの中にある歯車アイコン */
+.practice-title .edit-icon, 
+.section-title .edit-icon {
     display: inline-block;
     margin-left: 0.5em;
     font-size: 1rem;
@@ -59,16 +61,19 @@
     vertical-align: middle;
 }
 /* 行にホバーしたとき */
-.practice-title:hover .edit-icon {
+.practice-title:hover .edit-icon, 
+.section-title:hover .edit-icon {
     opacity: 0.5;
 }
 /* アイコン本体にホバーしたとき */
-.practice-title .edit-icon:hover {
+.practice-title .edit-icon:hover,
+.section-title .edit-icon:hover {
     opacity: 1;
     transform: translateY(-2px) scale(1.2);
 }
 /* クリックしたとき */
-.practice-title .edit-icon:active {
+.practice-title .edit-icon:active, 
+.section-title .edit-icon:active {
     transform: translateY(0) scale(1.0);
     filter: brightness(1.4);
 }

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% set messages = get_flashed_messages(with_categories=true) %}
 {% block title %}練習問題{% endblock %}
 {% block contents %}
 {% include "components/header/practices_header.html" %}
@@ -12,8 +13,20 @@
             <div class="toggle-content is-close">
                 {% for section in chapter.sections %}
                     <article class="section">
+                        {# 問題新規追加ページへのリンク用URL #}
+                        {% set create_url = url_for(
+                            "create_question", 
+                            chapter=chapter.chapter_number, 
+                            section=section.section_number
+                        ) %}
                         <h3 class="heading heading--md section-title">
                             【その{{ section.section_number }}】{{ section.section_title }}
+                            <span 
+                                class="edit-icon"
+                                title="この節に問題を追加する"
+                                aria-label="問題追加"
+                                onclick="location.href='{{ create_url }}'"
+                            >✒️</span>
                         </h3>
                         <ul class="practice-list">
                             {% for q in section.questions %}
@@ -42,5 +55,12 @@
             </div>
         </section>
     {% endfor %}
+    {% if messages %}
+        <div class="flash-container">
+            {% for category, msg in messages %}
+                <div class="flash flash--{{ category }}">{{ msg }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
 </main>
 {% endblock %}
