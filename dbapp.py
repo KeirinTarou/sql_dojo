@@ -388,13 +388,23 @@ def create_question(chapter, section):
             )
         
         # 問題データ新規追加
-        question_number = pq.insert_question(
-            chapter_number=chapter, 
-            section_number=section, 
-            question_text=question_text, 
-            answer_query=answer_query, 
-            check_mode=check_mode
-        )
+        try:
+            question_number = pq.insert_question(
+                chapter_number=chapter, 
+                section_number=section, 
+                question_text=question_text, 
+                answer_query=answer_query, 
+                check_mode=check_mode
+            )
+            if question_number == 0:
+                question_title = "やってみよう"
+            else:
+                question_title = f"第{question_number}問"
+            msg = f"第{chapter}章 【その{section}】{question_title} を追加しました。"
+            flash(f"( *´∀`) < {msg}", "success")
+        except Exception as e:
+            flash(f"(((( ；ﾟДﾟ))) < 更新失敗……。{e}...", "error")
+            return redirect(request.url)
         # 問題一覧ページにリダイレクト
         return redirect(url_for("practices"))
 
