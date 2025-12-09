@@ -349,6 +349,65 @@ def questions_edit(chapter, section, question):
         check_mode=check_mode
     )
 
+# 問題データの新規追加ページ
+@app.route("/questions/create/<int:chapter>/<int:section>", methods=["GET", "POST"])
+def create_question(chapter, section):
+    question_number = pq.gen_next_question_num(
+        chapter_number=chapter, 
+        section_number=section
+    )
+    chapter_title = pq.get_chapter_title(chapter)
+    section_title = pq.get_section_title(chapter, section)
+    if chapter_title is None or section_title is None:
+        # 404エラーにする
+        abort(404)
+    
+    # 問題データが送信された
+    if request.method == "POST":
+        # フォームから取得
+        question_text = request.form.get("question_text", "").strip()
+        answer_query = request.form.get("answer_edit", "").strip()
+        check_mode = request.form.get("check_mode", "strict")
+
+        # バリデーション
+        # 問題文・正解クエリが空 -> 不受理・差し戻し＆煽りメッセージ
+        if not question_text or not answer_query:
+            flash("m9(^Д^) < 問題文と正解クエリは必須ですｗｗｗ", "error")
+            return render_template(
+                "pages/editor/question_creator.html", 
+                token=generate_csrf(), 
+                chapter_number = chapter, 
+                chapter_title = chapter_title, 
+                section_number = section, 
+                section_title=section_title, 
+                question_number = question_number, 
+                # 入力内容を保持
+                question_text=question_text, 
+                answer_query=answer_query, 
+                check_mode=check_mode
+            )
+        
+        # 問題データ新規追加
+        question_number = pq.insert_question(
+            chapter_number=chapter, 
+            section_number=section, 
+            question_text=question_text, 
+            answer_query=answer_query, 
+            check_mode=check_mode
+        )
+        # 問題一覧ページにリダイレクト
+        return redirect(url_for("practices"))
+
+    return render_template(
+        "pages/editor/question_creator.html", 
+        token=generate_csrf(), 
+        chapter_number = chapter, 
+        chapter_title = chapter_title, 
+        section_number = section, 
+        section_title=section_title, 
+        question_number = question_number
+    )
+
 import webbrowser
 from threading import Timer
 

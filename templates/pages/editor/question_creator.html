@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% set messages = get_flashed_messages(with_categories=true) %}
+
+{% block title %}Creator{% endblock %}
+{% block contents %}
+    <main class="page page--edit">
+        <!-- イントロダクション部分 -->
+        {% include "components/header/creator_header.html" %}
+        <section class="section section--editor">
+            <h2 class="heading heading--xl">第{{ chapter_number }}章 {{ chapter_title }}</h2>
+            <h3 class="heading heading--lg">【その{{ section_number }}】{{ section_title }}</h3>
+            <h4 class="heading heading--md">
+                {% if question_number == 0 %}
+                やってみよう
+                {% else %}
+                第{{ question_number }}問
+                {% endif %}
+            </h4>
+            {% set action_url = url_for(
+                'create_question', 
+                chapter=chapter_number, 
+                section=section_number) 
+            %}
+            {% set btn_text = "追加" %}
+            {% include "pages/editor/_question_form.html" %}
+        </section>
+        {% if messages %}
+            <div class="flash-container">
+                {% for category, msg in messages %}
+                    <div class="flash flash--{{ category }}">{{ msg }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </main>
+{% endblock %}
+{# errorカテゴリが含まれる場合のみ、変数`has_error`にTrueが入るようにする #}
+    {# 
+        - `selectattr(0, 'equalto', 'error')`で、
+            - `messages`（タプルのリスト）のうち、
+            - タプルの0番目の要素が'error'である要素をフィルターし、
+            - タプルのリストを取得する
+        - 得られたリストについて要素数が0よりも大きければ'error'カテゴリあり
+    #}
+{% set has_error = messages | selectattr(0, 'equalto', 'error') | list | length > 0 %}
+{% block loading_logo %}
+    {% if has_error %}
+        <div id="loading-logo">
+            <img src="{{ url_for('static', filename='img/aori-face.png') }}" alt="loading logo">
+        </div>
+    {% endif %}
+{% endblock %}

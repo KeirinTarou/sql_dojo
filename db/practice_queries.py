@@ -311,3 +311,21 @@ def gen_next_question_num(chapter_number: int, section_number: int) -> int:
     #   -> スカラクエリなので、先頭の値を取得すれば良い
     max_no = next(iter(row.values()))
     return 0 if max_no is None else max_no + 1
+
+def get_chapter_title(chapter_number: int) -> Optional[str]:
+    row = fetch_one(
+        "SELECT ChapterTitle FROM Chapters WHERE ChapterNumber = ?", 
+        (chapter_number, )
+    )
+
+    if row is None: return None
+    return row["ChapterTitle"]
+
+def get_section_title(chapter_number: int, section_number: int) -> Optional[str]:
+    row = fetch_one(
+        "SELECT SectionTitle FROM Sections WHERE ChapterNumber = ? AND SectionNumber = ?", 
+        (chapter_number, section_number)
+    )
+
+    if row is None: return None
+    return row["SectionTitle"]
