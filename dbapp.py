@@ -386,6 +386,23 @@ def create_question(chapter, section):
                 answer_query=answer_query, 
                 check_mode=check_mode
             )
+        # クエリのチェック -> ダメなら差し戻し
+        result, msg = pq.validate_answer_query(answer_query)
+        if not result:
+            flash(msg, "error")
+            return render_template(
+                "pages/editor/question_creator.html", 
+                token=generate_csrf(), 
+                chapter_number = chapter, 
+                chapter_title = chapter_title, 
+                section_number = section, 
+                section_title=section_title, 
+                question_number = question_number, 
+                # 入力内容を保持
+                question_text=question_text, 
+                answer_query=answer_query, 
+                check_mode=check_mode
+            )
         
         # 問題データ新規追加
         try:

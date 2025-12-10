@@ -185,7 +185,7 @@ SECTION_EXISTS_QUERY = """
     ;
 """
 
-def fetch_all(sql_query: str, params: Optional[Sequence[Any]]=None) -> Tuple[List[str], List[Dict[str, Any]]]:
+def fetch_all_questions(sql_query: str, params: Optional[Sequence[Any]]=None) -> Tuple[List[str], List[Dict[str, Any]]]:
     """ 複数のレコードセットを取得する
     """
     if params is None:
@@ -329,3 +329,50 @@ def get_section_title(chapter_number: int, section_number: int) -> Optional[str]
 
     if row is None: return None
     return row["SectionTitle"]
+
+# 正解クエリのバリデーション用関数
+from sql_dojo.db.exceptions import (
+    QuerySyntaxError, 
+    QueryRuntimeError
+)
+from sql_dojo.db.queries import (
+    sanitize_sql, 
+    contains_forbidden_keywords, 
+    is_multi_statement, 
+    fetch_all
+)
+
+def validate_answer_query(query: str) -> Tuple[bool, str]:
+    """
+    正解用SQLクエリを検証する\n
+    `db/practice_queries.py`
+    
+    :param query: 検証したいSQLクエリ
+    :type query: str
+    :return: 検証結果（T/F, Fの場合はその内容/Tの場合は空文字）
+    :rtype: Tuple[bool, str]
+    """
+    cleansed = sanitize_sql(query)
+    # サニタイズ後のクエリが空文字
+    if not cleansed:
+        return False, "m9(^Д^) < 正解クエリが空ですｗｗｗ"
+    # SELECT、WITH以外
+    if not cleansed.upper().startswith(("SELECT", "WITH")):
+        return False, "m9(^Д^) < 始まりは`SELECT`か`WITH`ですｗｗｗ"
+    # 禁止ワードチェック
+    if contains_forbidden_keywords(cleansed):
+        return False, "m9(^Д^) < INSERT/UPDATE/DELETEなどは使用禁止ですｗｗｗ"
+    # マルチステートメント禁止
+    if is_multi_statement(cleansed):
+        return False, "m9(^Д^) < 複数のSQL文には対応しませんｗｗｗ"
+    
+    # 実行可否チェック
+    try:
+        fetch_all(cleansed)
+    except QuerySyntaxError:
+        return False, "m9(^Д^) < SQLの構文にエラーがありますｗｗｗ"
+    except QueryRuntimeError as e:
+        return False, f"m9(^Д^) < クエリ実行時エラー: {e}ｗｗｗ"
+    
+    # ここまでたどり着いたら、一応正常なクエリ
+    return True, ""
