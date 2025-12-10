@@ -15,7 +15,7 @@
                     <article class="section">
                         {# 問題新規追加ページへのリンク用URL #}
                         {% set create_url = url_for(
-                            "create_question", 
+                            "question_create", 
                             chapter=chapter.chapter_number, 
                             section=section.section_number
                         ) %}

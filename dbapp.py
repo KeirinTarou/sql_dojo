@@ -351,7 +351,7 @@ def questions_edit(chapter, section, question):
 
 # 問題データの新規追加ページ
 @app.route("/questions/create/<int:chapter>/<int:section>", methods=["GET", "POST"])
-def create_question(chapter, section):
+def question_create(chapter, section):
     question_number = pq.gen_next_question_num(
         chapter_number=chapter, 
         section_number=section
