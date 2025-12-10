@@ -6,7 +6,7 @@ from typing import List, Dict, Any, Optional
 
 from .practice_queries import (
     PRACTICES_LIST_QUERY, 
-    fetch_all, 
+    fetch_all_questions, 
     SELECT_QUESTION, 
     fetch_one
 )
@@ -17,7 +17,7 @@ def generate_structured_practice_list() -> List[Dict[str, Any]]:
         `db/practices.py`
     """
     # 問題データを全取得
-    _, rows = fetch_all(sql_query=PRACTICES_LIST_QUERY)
+    _, rows = fetch_all_questions(sql_query=PRACTICES_LIST_QUERY)
 
     # 章 -> 節 -> 問題 のネスト構造を構築
     chapters = []
