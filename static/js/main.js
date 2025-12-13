@@ -176,6 +176,7 @@
             CodeMirror関係
         -------------------------------------------------------------------- */
             // textareaをCodeMirrorに置き換え
+            // `sql_query`は、textarea要素のid属性値
             const textarea = document.getElementById('sql_query');
             let sqlEditor
             if (textarea) {
@@ -277,6 +278,26 @@
                     $('body').append(toast);
                     setTimeout(() => toast.remove(), 2000);
                 }
+            });
+
+            // クエリエディタの`change`イベントを拾ってエディタへの入力値をローカルストレージに保存
+            if (sqlEditor) {
+                sqlEditor.on("change", function() {
+                    const text = sqlEditor.getValue();
+                    localStorage.setItem("draft_query", text);
+                });
+
+                // ローカルストレージの値をエディタに戻す
+                const saved = localStorage.getItem("draft_query");
+                if (saved && sqlEditor) {
+                    // エディタに戻す
+                    sqlEditor.setValue(saved);
+                }
+
+            }
+            // クエリ送信フォームsubmit時に消去
+            $("#form--submit-query").on("submit", function() {
+                localStorage.removeItem("draft_query");
             });
 
             // 問題データ編集用のエディタ
