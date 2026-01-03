@@ -297,7 +297,15 @@ def questions_edit(chapter, section, question):
     chapter_number = chapter
     section_number = section
     question_number = question
-    token = generate_csrf()
+
+    # DBから問題・正解クエリのデータを取得
+    result = pq.get_question_data(chapter_number=chapter_number, section_number=section_number, question_number=question_number)
+
+    chapter_title = result["ChapterTitle"]
+    section_title = result["SectionTitle"]
+    question_text = result["Question"]
+    answer_query = result["AnswerQuery"]
+    check_mode = result["CheckMode"]
 
     if request.method == "POST":
         # フォームから受け取ったデータの検証
@@ -305,9 +313,39 @@ def questions_edit(chapter, section, question):
         answer_query = request.form.get("answer_edit", "").strip()
         check_mode = request.form.get("check_mode", "strict")
         # 問題文・正解クエリが空 -> 不受理・差し戻し＆煽りメッセージ
+        print("1: ", question_text)
         if not question_text or not answer_query:
+            print("2: ", question_text)
             flash("m9(^Д^) < 問題文と正解クエリは必須ですｗｗｗ", "error")
-            return redirect(request.url)
+            return render_template(
+                "pages/editor/question_editor.html", 
+                token=generate_csrf(),
+                chapter_number=chapter_number, 
+                chapter_title=chapter_title, 
+                section_number=section_number, 
+                section_title=section_title, 
+                question_number=question_number, 
+                question_text=question_text, 
+                answer_query = answer_query, 
+                check_mode=check_mode
+            )
+        # クエリのチェック -> ダメなら差し戻し
+        result, msg = pq.validate_answer_query(answer_query)
+        if not result:
+            flash(msg, "error")
+            return render_template(
+                "pages/editor/question_editor.html", 
+                token=generate_csrf(), 
+                chapter_number = chapter, 
+                chapter_title = chapter_title, 
+                section_number = section, 
+                section_title=section_title, 
+                question_number = question_number, 
+                # 入力内容を保持
+                question_text=question_text, 
+                answer_query=answer_query, 
+                check_mode=check_mode
+            )
 
         # フォームから受け取った問題・クエリでDBを更新
         try: 
@@ -326,19 +364,10 @@ def questions_edit(chapter, section, question):
 
         # 編集画面へリダイレクト
         return redirect(request.url)
-    
-    # DBから問題・正解クエリのデータを取得
-    result = pq.get_question_data(chapter_number=chapter_number, section_number=section_number, question_number=question_number)
-
-    chapter_title = result["ChapterTitle"]
-    section_title = result["SectionTitle"]
-    question_text = result["Question"]
-    answer_query = result["AnswerQuery"]
-    check_mode = result["CheckMode"]
 
     return render_template(
         'pages/editor/question_editor.html', 
-        token=token, 
+        token=generate_csrf(), 
         chapter_number=chapter_number, 
         chapter_title=chapter_title, 
         section_number=section_number, 
@@ -373,6 +402,23 @@ def question_create(chapter, section):
         # 問題文・正解クエリが空 -> 不受理・差し戻し＆煽りメッセージ
         if not question_text or not answer_query:
             flash("m9(^Д^) < 問題文と正解クエリは必須ですｗｗｗ", "error")
+            return render_template(
+                "pages/editor/question_creator.html", 
+                token=generate_csrf(), 
+                chapter_number = chapter, 
+                chapter_title = chapter_title, 
+                section_number = section, 
+                section_title=section_title, 
+                question_number = question_number, 
+                # 入力内容を保持
+                question_text=question_text, 
+                answer_query=answer_query, 
+                check_mode=check_mode
+            )
+        # クエリのチェック -> ダメなら差し戻し
+        result, msg = pq.validate_answer_query(answer_query)
+        if not result:
+            flash(msg, "error")
             return render_template(
                 "pages/editor/question_creator.html", 
                 token=generate_csrf(), 
