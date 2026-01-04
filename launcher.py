@@ -6,11 +6,20 @@ from pathlib import Path
 
 import sys
 
-def resource_path(relative_path):
-    # PyInstaller
+def resource_path(relative_path: str | Path) -> Path:
+    # PyInstallerで作った.exeによる実行時
+    #   .exeファイルによる実行の場合、sys.frozen属性が存在する
+    #   sys.frozen属性が存在したら、getattr(sys, "frozen")が
+    #   何らかの値を返すので条件式がTrueになり、存在しなかったら
+    #   デフォルト値のFalseを返すので条件式がFalseになる
     if getattr(sys, "frozen", False):
+        # sys.executableは実行ファイルのフルパス
+        #   -> 実行ファイルの親ディレクトリにrelative_pathを連結
+        #   * sys.executableは絶対パスを返すことが保障されている
+        #       ->resolve()メソッド不要
         return Path(sys.executable).parent / relative_path
     # スクリプト実行時
+    #   -> このファイルの親ディレクトリにrelative_pathを連結
     return Path(__file__).resolve().parent / relative_path
 
 # 設定
@@ -48,7 +57,7 @@ root.title("🚀お笑いSQL道場 Launcher")
 root.geometry("320x130")
 
 # アイコン設定
-ICON_PATH = resource_path("img/BA-90.ico")
+ICON_PATH = resource_path("img/ba-90.ico")
 root.iconbitmap(str(ICON_PATH))
 
 label_status = tk.Label(
