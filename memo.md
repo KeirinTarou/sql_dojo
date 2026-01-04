@@ -60,10 +60,8 @@ sql_dojo_release/
 sql_dojo/
     _internal/
     data/
-    db/
     img/
         ba-90.ico
-    services/
     static/
     storage/
     templates/
@@ -71,6 +69,7 @@ sql_dojo/
     sql_dojo.exe
     launcher.exe
 ```
+`config.py`、`data`、`services`は
 
 ### コンソール表示ありで起動する
 - `sql-dojo_release`フォルダをカレントディレクトリにして実行
