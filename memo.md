@@ -42,7 +42,9 @@
         - `static/js`フォルダ: `jquery-3.7.1.min.js`
 
 ## `sql_dojo`を`.exe`ファイル化する
-次のようなフォルダ構成になっている前提
+- 次のようなフォルダ構成になっている前提
+- また、ビルド後の`sql_dojo.exe`と`launcher.exe`は同一フォルダ階層にある前提
+
 ```bash
 sql_dojo_release/
     img/
@@ -52,6 +54,24 @@ sql_dojo_release/
         launcher.py
     venv/
 ```
+- `sql_dojo.exe`ビルド後、`sql_dojo.exe`、`_internal`、`img`フォルダをインストールフォルダに移動する
+- インストールフォルダの構成は次のとおり
+```bash
+sql_dojo/
+    _internal/
+    data/
+    db/
+    img/
+        ba-90.ico
+    services/
+    static/
+    storage/
+    templates/
+    .env
+    sql_dojo.exe
+    launcher.exe
+```
+
 ### コンソール表示ありで起動する
 - `sql-dojo_release`フォルダをカレントディレクトリにして実行
 ```
@@ -67,5 +87,5 @@ pyinstaller --name sql_dojo --icon "img\ba-90.ico" --noconsole "sql_dojo\dbapp.p
 ### ランチャーの`.exe`化
 - `sql-dojo_release`フォルダをカレントディレクトリにして実行
 ```
-pyinstaller --noconsole --onefile --add-data "img\ba-90.ico;img" sql_dojo\launcher.py --icon=img\BA-90.ico
+pyinstaller --noconsole --onefile --add-data "img\ba-90.ico;img" sql_dojo\launcher.py --icon=img\ba-90.ico
 ```
