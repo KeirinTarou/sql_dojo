@@ -56,6 +56,10 @@ root = tk.Tk()
 root.title("🚀お笑いSQL道場 Launcher")
 root.geometry("320x130")
 
+# [x]クリック時の動作 -> stop_app()に差し替え
+root.protocol("WM_DELETE_WINDOW", stop_app)
+
+
 # アイコン設定
 ICON_PATH = resource_path("img/ba-90.ico")
 root.iconbitmap(str(ICON_PATH))
