@@ -80,8 +80,9 @@ pyinstaller --name sql_dojo --icon "img\ba-90.ico" --console "sql_dojo\dbapp.py"
 ### コンソール表示なしで起動する
 - `sql-dojo_release`フォルダをカレントディレクトリにして実行
 ```
-pyinstaller --name sql_dojo --icon "img\ba-90.ico" --noconsole "sql_dojo\dbapp.py"
+pyinstaller --name sql_dojo --icon "img\ba-90.ico" --noconsole --add-data "db\squat_data.db;db" "sql_dojo\dbapp.py"
 ```
+- SQLite対応でコマンド変更
 
 ### ランチャーの`.exe`化
 - `sql-dojo_release`フォルダをカレントディレクトリにして実行
