@@ -1,8 +1,18 @@
 # import mysql.connector
 import pyodbc
+import sys
 import os
 import sqlite3
 from pathlib import Path
+
+def get_base_dir():
+    """ スクリプト実行時と`.exe`実行時でディレクトリを切り替える"""
+    # PyInstallerの`.exe`実行時
+    if getattr(sys, "frozen", False):
+        return Path(sys.executable).parent
+    # スクリプト実行時
+    else:
+        return Path(__file__).resolve().parent
 
 def get_connection_string():
     if os.getenv("USE_ODBC") == "USE_MYSQL":
@@ -26,8 +36,10 @@ def get_connection():
     """`pyodbc.Connection`インスタンスを返す
     """
     if os.getenv("USE_ODBC") == "USE_SQLITE":
-        DB_PATH = Path(__file__).parent / os.getenv("SQLITE_DB_NAME")
-        return sqlite3.connect(DB_PATH)
+        base_dir = get_base_dir()
+        db_path = base_dir / "db" / os.getenv("SQLITE_DB_NAME")
+        return sqlite3.connect(db_path)
+    # ODBCの場合
     return pyodbc.connect(get_connection_string())
 
 # mysql.connector版
