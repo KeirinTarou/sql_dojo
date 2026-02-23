@@ -1,6 +1,7 @@
 from sql_dojo.db.connection import get_connection
 import re
 import os
+import sqlite3
 
 from typing import (
     Any, Dict, Iterable, List, Optional, 
@@ -50,28 +51,36 @@ def fetch_one(query: str, params: Optional[Sequence[Any]]=None) -> Optional[Dict
         params = ()
 
     try:
-        with get_connection() as conn:
-            with conn.cursor() as cur:
-                cur.execute(query, params)
+        conn = get_connection()
+        cur = conn.cursor()
+        try:
+            cur.execute(query, params)
 
-                columns = [col[0] for col in cur.description]
-                row = cur.fetchone()
+            columns = [col[0] for col in cur.description]
+            row = cur.fetchone()
 
-                # 結果セットが返らなかったらNone
-                if row is None:
-                    return None
-                # 取得した1件のレコードをdictにして返す
-                return dict(zip(columns, row))
-        
+            # 結果セットが返らなかったらNone
+            if row is None:
+                return None
+            # 取得した1件のレコードをdictにして返す
+            return dict(zip(columns, row))
+        finally:
+            cur.close()
+            conn.close()
     # DB由来の例外をキャッチ
     except pyodbc.ProgrammingError as e:
         # SQLの構文エラーはここでキャッチ -> スロー
         raise QuerySyntaxError(str(e)) from e
     except pyodbc.Error as e:
         raise QueryRuntimeError(str(e)) from e
+    except sqlite3.OperationalError as e:
+        # SQLの構文エラーはここでキャッチ -> スロー
+        raise QuerySyntaxError(str(e)) from e
+    except sqlite3.Error as e:
+        raise QueryRuntimeError(str(e)) from e
         
 
-def fetch_all(query: str, params: Optional[Sequence[Any]]=None) -> Tuple[List[str], List[pyodbc.Row]]:
+def fetch_all(query: str, params: Optional[Sequence[Any]]=None) -> Tuple[List[str], List[Any]]:
     """ クエリを渡して全件取得する
         カラム名（str）のリスト, Rowオブジェクトのリストを返す
     """
@@ -79,23 +88,30 @@ def fetch_all(query: str, params: Optional[Sequence[Any]]=None) -> Tuple[List[st
         params = ()
     
     try:
-        with get_connection() as conn:
-            with conn.cursor() as cur:
-                cur.execute(query, params)
-                # カラム名のリストを取得
-                columns = [col[0] for col in cur.description]
-                # レコードセットを取得（`pyodbc.Row`オブジェクトのリスト）
-                rows = cur.fetchall()
-                # カラム名のリストと`Row`オブジェクトのリストを返却
-                return columns, rows
-    
+        conn = get_connection()
+        cur = conn.cursor()
+        try:
+            cur.execute(query, params)
+            # カラム名のリストを取得
+            columns = [col[0] for col in cur.description]
+            # レコードセットを取得（`pyodbc.Row`オブジェクトのリスト）
+            rows = cur.fetchall()
+            # カラム名のリストと`Row`オブジェクトのリストを返却
+            return columns, rows
+        finally:
+            cur.close()
+            conn.close()
     # DB由来の例外をキャッチ
     except pyodbc.ProgrammingError as e:
         # SQLの構文エラーはここでキャッチ -> スロー
         raise QuerySyntaxError(str(e)) from e
     except pyodbc.Error as e:
         raise QueryRuntimeError(str(e)) from e
-
+    except sqlite3.OperationalError as e:
+        # SQLの構文エラーはここでキャッチ -> スロー
+        raise QuerySyntaxError(str(e)) from e
+    except sqlite3.Error as e:
+        raise QueryRuntimeError(str(e)) from e
 
 def describe_table(table_name: str) -> Tuple[List[str], List[pyodbc.Row]]:
     """ `DESC`コマンドを使ってテーブル構造を取得
