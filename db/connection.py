@@ -1,6 +1,7 @@
 # import mysql.connector
 import pyodbc
 import os
+import sqlite3
 from pathlib import Path
 
 def get_connection_string():
@@ -24,7 +25,9 @@ def get_connection_string():
 def get_connection():
     """`pyodbc.Connection`インスタンスを返す
     """
-    print(get_connection_string())
+    if os.getenv("USE_ODBC") == "USE_SQLITE":
+        DB_PATH = Path(__file__).parent / os.getenv("SQLITE_DB_NAME")
+        return sqlite3.connect(DB_PATH)
     return pyodbc.connect(get_connection_string())
 
 # mysql.connector版
