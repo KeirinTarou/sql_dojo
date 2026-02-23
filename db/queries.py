@@ -1,5 +1,6 @@
 from sql_dojo.db.connection import get_connection
 import re
+import os
 
 from typing import (
     Any, Dict, Iterable, List, Optional, 
@@ -99,7 +100,12 @@ def fetch_all(query: str, params: Optional[Sequence[Any]]=None) -> Tuple[List[st
 def describe_table(table_name: str) -> Tuple[List[str], List[pyodbc.Row]]:
     """ `DESC`コマンドを使ってテーブル構造を取得
     """
-    query = f"DESC {table_name};"
+    # MySQLとSQLiteでクエリが異なる
+    odbc = os.getenv("USE_ODBC")
+    if odbc == "USE_MYSQL":
+        query = f"DESC {table_name};"
+    elif odbc == "USE_SQLITE":
+        query = f"PRAGMA table_info({table_name})"
     return fetch_all(query)
 
 def sanitize_sql(sql_query: str) -> str:
