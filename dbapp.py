@@ -80,7 +80,13 @@ def _exec_sql_query(sql_query: str, page: str, use_excel: bool=False) -> tuple[l
 
 def _prepare_exec_query(form, page: str) -> tuple[str, str | None]:
     # クエリ実行の前処理
-    sql_query = form.get("sql_query", "").strip()
+    raw = request.form.get("sql_query", "")
+    
+    if isinstance(raw, bytes):
+        sql_query = raw.decode("utf-8", errors="ignore")
+    else:
+        sql_query = raw
+    sql_query = sql_query.strip()
      # CodeMirrorラッパーの高さを保存
     sql_query_height = request.form.get("sql_query_height")
     if sql_query_height:
